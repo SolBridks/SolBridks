@@ -1,0 +1,6 @@
+{
+  "name": "SolBridks",
+  "description": "A premium on-demand enterprise IT & infrastructure support marketplace connecting clients with vetted hardware specialists under strict corporate SLA standards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
