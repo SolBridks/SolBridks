@@ -267,25 +267,25 @@ export default function OperatorDashboard({
           onClick={() => setOperatorTab('rates')}
           className={`px-3 py-1.5 rounded-lg transition-all ${operatorTab === 'rates' ? 'bg-[#5a5a40] text-white shadow' : 'text-[#8a8d81] hover:text-[#3d4234]'}`}
         >
-          📈 guideline rules &amp; fixed rates
+          📈 Guidelines &amp; Fixed Rates
         </button>
         <button
           onClick={() => setOperatorTab('specialists')}
-          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'specialists' ? 'bg-[#5a5a40] text-white shadow' : 'text-[#8a8d81] hover:text-[#3d4234]'}`}
+          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'specialists' ? 'bg-[#0f172a] text-white shadow' : 'text-slate-500 hover:text-slate-900'}`}
         >
-          🛡️ specialist nodes ({experts.length})
+          🛡️ Specialists ({experts.length})
         </button>
         <button
           onClick={() => setOperatorTab('clients')}
-          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'clients' ? 'bg-[#5a5a40] text-white shadow' : 'text-[#8a8d81] hover:text-[#3d4234]'}`}
+          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'clients' ? 'bg-[#0f172a] text-white shadow' : 'text-slate-500 hover:text-slate-900'}`}
         >
-          👥 client portfolios
+          👥 Clients
         </button>
         <button
           onClick={() => setOperatorTab('tickets')}
-          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'tickets' ? 'bg-[#5a5a40] text-white shadow' : 'text-[#8a8d81] hover:text-[#3d4234]'}`}
+          className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${operatorTab === 'tickets' ? 'bg-[#0f172a] text-white shadow' : 'text-slate-500 hover:text-slate-900'}`}
         >
-          🎟️ master ticket matrix ({issues.length})
+          🎟️ Support Tickets ({issues.length})
         </button>
       </div>
 
@@ -295,7 +295,7 @@ export default function OperatorDashboard({
           <div className="lg:col-span-5 bg-white border border-[#e9e7df] rounded-2xl p-5 space-y-4 shadow-sm">
             <div className="flex items-center justify-between border-b border-[#e9e7df] pb-3 font-sans">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#3d4234] flex items-center gap-1.5">
-                <Settings className="w-4 h-4 text-[#5a5a40]" /> Fixed Price Guidelines
+                <Settings className="w-4 h-4 text-[#5a5a40]" /> Guidelines &amp; Fixed Rates
               </h3>
               <span className="text-[9px] bg-[#f0f2ea] border border-[#dce0d1] px-2 py-0.5 rounded text-[#5a5a40] font-bold uppercase">
                 HQ COMPLIANCE
@@ -305,7 +305,7 @@ export default function OperatorDashboard({
             <form onSubmit={handleSaveRates} className="space-y-4 text-xs">
               <div className="space-y-2.5 font-sans">
                 <div>
-                  <label className="text-[#3d4234] font-semibold block mb-1">Hardware Repair Fixed Rate ($)</label>
+                  <label className="text-[#3d4234] font-semibold block mb-1">Hardware &amp; Electronics Rate ($)</label>
                   <div className="flex items-center bg-white border border-[#e9e7df] rounded-xl px-2.5 py-1.5">
                     <DollarSign className="w-3.5 h-3.5 text-[#8a8d81]" />
                     <input
@@ -318,7 +318,7 @@ export default function OperatorDashboard({
                 </div>
 
                 <div>
-                  <label className="text-[#3d4234] font-semibold block mb-1">Software Audit Rate ($)</label>
+                  <label className="text-[#3d4234] font-semibold block mb-1">Software &amp; Web Solutions Rate ($)</label>
                   <div className="flex items-center bg-white border border-[#e9e7df] rounded-xl px-2.5 py-1.5">
                     <DollarSign className="w-3.5 h-3.5 text-[#8a8d81]" />
                     <input
@@ -331,7 +331,7 @@ export default function OperatorDashboard({
                 </div>
 
                 <div>
-                  <label className="text-[#3d4234] font-semibold block mb-1">Subnets/Network Rate ($)</label>
+                  <label className="text-[#3d4234] font-semibold block mb-1">Telecom &amp; Networking Rate ($)</label>
                   <div className="flex items-center bg-white border border-[#e9e7df] rounded-xl px-2.5 py-1.5">
                     <DollarSign className="w-3.5 h-3.5 text-[#8a8d81]" />
                     <input
@@ -345,7 +345,7 @@ export default function OperatorDashboard({
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[#3d4234] font-semibold block mb-1">Security Rate ($)</label>
+                    <label className="text-[#3d4234] font-semibold block mb-1">Cybersecurity Rate ($)</label>
                     <div className="flex items-center bg-white border border-[#e9e7df] rounded-xl px-2.5 py-1.5">
                       <DollarSign className="w-3.5 h-3.5 text-[#8a8d81]" />
                       <input
@@ -358,7 +358,7 @@ export default function OperatorDashboard({
                   </div>
 
                   <div>
-                    <label className="text-[#3d4234] font-semibold block mb-1">Cloud Rate ($)</label>
+                    <label className="text-[#3d4234] font-semibold block mb-1">Cloud &amp; AI Rate ($)</label>
                     <div className="flex items-center bg-white border border-[#e9e7df] rounded-xl px-2.5 py-1.5">
                       <DollarSign className="w-3.5 h-3.5 text-[#8a8d81]" />
                       <input
@@ -482,27 +482,28 @@ export default function OperatorDashboard({
 
       {/* SPECIALISTS MANAGEMENT TAB */}
       {operatorTab === 'specialists' && (
-        <div className="bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-sm space-y-4 animate-fade-in">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 animate-fade-in border-t-4 border-t-[#0f172a]">
           <div>
-            <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#3d4234]">QA Specialist Nodes &amp; Verification Hub</h3>
-            <p className="text-xs text-[#8a8d81] font-sans mt-0.5">Control technician licenses, verification statuses, direct bank routing overrides, and audits of on-site service providers.</p>
+            <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">Specialists Directory &amp; Verification Hub</h3>
+            <p className="text-xs text-slate-500 font-sans mt-0.5">Manage technician credentials, verification status, bank routing details, and on-site service providers.</p>
           </div>
 
-          <div className="overflow-x-auto border border-[#e9e7df] rounded-xl">
+          <div className="overflow-x-auto border border-slate-200 rounded-xl">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-[#f9f9f5] border-b border-[#e9e7df] text-[#8a8d81] font-bold uppercase tracking-wider text-[10px]">
-                  <th className="p-3">Specialist node</th>
-                  <th className="p-3">Vehicle / Support kit</th>
-                  <th className="p-3">Dynamic earnings</th>
-                  <th className="p-3">Bank node coordinates</th>
-                  <th className="p-3">Verification state</th>
-                  <th className="p-3 text-right">Administrative controls</th>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                  <th className="p-3">Specialist Name</th>
+                  <th className="p-3">Industries &amp; Domains</th>
+                  <th className="p-3">Dynamic Earnings</th>
+                  <th className="p-3">Bank Account Details</th>
+                  <th className="p-3">Verification State</th>
+                  <th className="p-3 text-right">Administrative Controls</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e9e7df] font-sans">
                 {experts.map(exp => {
                   const isEditing = editingExpertId === exp.id;
+                  const domainsList = exp.domains && exp.domains.length > 0 ? exp.domains : exp.skills;
                   return (
                     <tr key={exp.id} className="hover:bg-slate-50 transition-all">
                       <td className="p-3">
@@ -521,7 +522,13 @@ export default function OperatorDashboard({
                         )}
                       </td>
                       <td className="p-3">
-                        <span className="font-semibold">{exp.vehicleType}</span>
+                        <div className="flex flex-wrap gap-1 max-w-xs">
+                          {domainsList.map((d, i) => (
+                            <span key={i} className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                              {d}
+                            </span>
+                          ))}
+                        </div>
                       </td>
                       <td className="p-3 font-mono font-black text-[#5a5a40]">
                         ${exp.totalEarnings}
@@ -536,17 +543,17 @@ export default function OperatorDashboard({
                               onChange={(e) => setEditExpertBank(e.target.value)}
                               className="bg-white border rounded px-1.5 py-0.5 text-[11px] block w-full"
                             />
-                            <input
+                             <input
                               type="text"
                               value={editExpertAccount}
-                              placeholder="Account Node"
+                              placeholder="Account Number"
                               onChange={(e) => setEditExpertAccount(e.target.value)}
                               className="bg-white border rounded px-1.5 py-0.5 text-[11px] block w-full"
                             />
                             <input
                               type="text"
                               value={editExpertRouting}
-                              placeholder="Routing Node"
+                              placeholder="Routing Number"
                               onChange={(e) => setEditExpertRouting(e.target.value)}
                               className="bg-white border rounded px-1.5 py-0.5 text-[11px] block w-full font-mono"
                             />
@@ -566,7 +573,7 @@ export default function OperatorDashboard({
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-[10px] bg-yellow-50 text-yellow-700 border border-yellow-200 px-2.5 py-1 rounded-full font-bold uppercase">
-                            <AlertTriangle className="w-3.5 h-3.5" />Pending QA sign-off
+                            <AlertTriangle className="w-3.5 h-3.5" />Pending QA Sign-off
                           </span>
                         )}
                       </td>
@@ -576,29 +583,29 @@ export default function OperatorDashboard({
                             onClick={() => handleToggleVerification(exp.id)}
                             className={`px-2.5 py-1 rounded text-[10px] font-extrabold uppercase transition cursor-pointer ${exp.isVerifiedByQA ? 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200' : 'bg-green-600 text-white hover:bg-green-700 border'}`}
                           >
-                            {exp.isVerifiedByQA ? 'Revoke QA Cert' : 'Approve Specialist'}
+                            {exp.isVerifiedByQA ? 'Revoke Certification' : 'Approve Specialist'}
                           </button>
                           
                           {isEditing ? (
                             <button
                               onClick={() => handleSaveExpertDetails(exp.id)}
-                              className="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer"
+                              className="bg-[#0f172a] hover:bg-slate-900 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-pointer"
                             >
-                              Save Node
+                              Save Details
                             </button>
                           ) : (
                             <button
                               onClick={() => handleStartEditExpert(exp)}
                               className="bg-slate-200 hover:bg-slate-300 text-[#3d4234] px-2 py-1 rounded text-[10px] font-bold cursor-pointer"
                             >
-                              Edit details
+                              Edit Details
                             </button>
                           )}
 
                           <button
                             onClick={() => handleDeleteExpert(exp.id)}
                             className="bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 p-1 rounded cursor-pointer"
-                            title="Delete Node"
+                            title="Delete Specialist"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -626,11 +633,11 @@ export default function OperatorDashboard({
 
           <div id="operator-client-card" className="border border-[#e9e7df] p-4 bg-[#f9f9f5] rounded-3xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             <div className="md:col-span-4 space-y-2 font-sans">
-              <span className="text-[9px] uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded font-bold font-mono">Client Node: {clientProfile.id}</span>
+              <span className="text-[9px] uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded font-bold font-mono">Client ID: {clientProfile.id}</span>
               <div className="space-y-1">
                 <div className="text-sm font-bold block">{clientProfile.name}</div>
                 <div className="text-xs text-[#8a8d81] block">{clientProfile.email}</div>
-                <div className="text-xs text-[#5a5a40] block font-mono">Grid Location: [{(issues[0]?.clientLat || 45.4215).toFixed(4)}, {(issues[0]?.clientLng || -75.6972).toFixed(4)}]</div>
+                <div className="text-xs text-[#5a5a40] block font-mono">Location Coordinates: [{(issues[0]?.clientLat || 45.4215).toFixed(4)}, {(issues[0]?.clientLng || -75.6972).toFixed(4)}]</div>
               </div>
             </div>
 
@@ -648,18 +655,18 @@ export default function OperatorDashboard({
             </div>
 
             <div className="md:col-span-5 text-right space-y-2">
-              <div className="text-xs font-semibold text-slate-500 font-sans">Aesthetic Controls</div>
+              <div className="text-xs font-semibold text-slate-500 font-sans">Account Controls</div>
               <div className="flex flex-wrap gap-2 justify-end">
                 <button
                   onClick={handleToggleClientRegistration}
-                  className={`px-3 py-1.5 text-xs font-extrabold uppercase rounded-lg border cursor-pointer ${clientProfile.isRegistered ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[#5a5a40] text-white hover:bg-[#4a4a34]'}`}
+                  className={`px-3 py-1.5 text-xs font-extrabold uppercase rounded-lg border cursor-pointer ${clientProfile.isRegistered ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[#0f172a] text-white hover:bg-slate-900'}`}
                 >
                   {clientProfile.isRegistered ? 'Deregister/Block Client' : 'Manually Register Client'}
                 </button>
                 <button
                   onClick={() => {
-                    const nextName = prompt("Edit client name coordinate:", clientProfile.name);
-                    const nextEmail = prompt("Edit client email node:", clientProfile.email);
+                    const nextName = prompt("Edit client name:", clientProfile.name);
+                    const nextEmail = prompt("Edit client email:", clientProfile.email);
                     if (nextName && nextEmail) {
                       handleSaveClientProfileDetails(nextName, nextEmail);
                     }
@@ -679,27 +686,27 @@ export default function OperatorDashboard({
         <div className="bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-sm space-y-4 animate-fade-in text-[#3d4234]">
           <div className="flex justify-between items-center border-b border-[#e9e7df] pb-3">
             <div>
-              <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#3d4234]">Portfolio Incident Matrix</h3>
-              <p className="text-xs text-[#8a8d81] font-sans">Full administrative authority to override lifecycles, edit invoice structures, force disbursements, or delete tickets.</p>
+              <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900">Support Tickets Overview</h3>
+              <p className="text-xs text-slate-500 font-sans">Full administrative authority to override lifecycles, edit invoice structures, force disbursements, or delete tickets.</p>
             </div>
-            <span className="text-[10px] bg-[#f9f9f5] border border-[#e9e7df] px-3 py-1 rounded-full font-bold uppercase tracking-wider font-mono">MASTER LEDGER RECORD</span>
+            <span className="text-[10px] bg-slate-100 border border-slate-200 text-slate-700 px-3 py-1 rounded-full font-bold uppercase tracking-wider font-mono">MASTER LEDGER RECORD</span>
           </div>
 
           <div className="space-y-4 max-h-[460px] overflow-y-auto pr-1">
             {issues.length === 0 ? (
-              <div className="text-center py-16 text-[#8a8d81] border border-dashed border-[#e9e7df] rounded-2xl">
-                <CheckCircle className="w-10 h-10 text-[#e9e7df] mx-auto mb-2" />
+              <div className="text-center py-16 text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+                <CheckCircle className="w-10 h-10 text-slate-300 mx-auto mb-2" />
                 <p className="text-xs font-bold">No registered client tickets exist on the system portfolio.</p>
               </div>
             ) : (
               issues.map(iss => {
                 const isOverriding = editingIssueId === iss.id;
                 return (
-                  <div key={iss.id} className="border border-[#e9e7df] rounded-2xl p-4 bg-[#f9f9f5] space-y-4 shadow-sm font-sans">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#e9e7df] pb-2 text-xs">
+                  <div key={iss.id} className="border border-slate-200 rounded-2xl p-4 bg-slate-50 space-y-4 shadow-sm font-sans">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-200 pb-2 text-xs">
                       <div>
                         <span className="font-mono font-bold text-[10px] uppercase bg-slate-200 px-1.5 py-0.5 rounded text-slate-800">ID: {iss.id}</span>
-                        <span className="text-[#8a8d81] ml-2">Client ID: <strong>{iss.clientId}</strong> &bull; Expert Node: <strong>{iss.expertId || 'unassigned'}</strong></span>
+                        <span className="text-slate-500 ml-2">Client ID: <strong>{iss.clientId}</strong> &bull; Specialist: <strong>{iss.expertId || 'unassigned'}</strong></span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-[9.5px] uppercase font-mono font-bold text-[#5a5a40]">Cycle State:</span>

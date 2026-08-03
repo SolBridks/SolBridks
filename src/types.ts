@@ -100,8 +100,10 @@ export interface ExpertProfile {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   skills: string[];
-  vehicleType: 'electric-bike' | 'public-transit' | 'ev' | 'hybrid'; // Represents engineering equipment patch / dispatch kit tier representing toolkits
+  domains?: string[];
+  vehicleType?: 'electric-bike' | 'public-transit' | 'ev' | 'hybrid'; // Legacy equipment tier representation
   rating: number;
   totalResolved: number;
   totalEarnings: number;
@@ -112,7 +114,9 @@ export interface ExpertProfile {
   isVerifiedByQA?: boolean; // New QA Admin confirmation state
   bankName?: string; // Financial Routing fields
   bankAccount?: string;
-  bankRouting?: string;
+  bankRouting?: string; // ABA Routing (USA)
+  bankInstitution?: string; // Institution No. 3 digits (Canada)
+  bankTransit?: string; // Transit No. 5 digits (Canada)
 }
 
 export interface NotificationLog {

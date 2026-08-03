@@ -130,7 +130,7 @@ export default function ClientDashboard({
       setLoginEmail('');
       onSelectClient?.(found.id);
     } else {
-      setLoginError('Verification failed. No registered client profile matches this corporate email address in the SolBridks secure sandbox log.');
+      setLoginError('Verification failed. No registered client profile matches this email address in our system records.');
     }
   };
 
@@ -140,7 +140,7 @@ export default function ClientDashboard({
       id: clientProfile?.id || 'client_usr',
       name: regName,
       email: regEmail,
-      companyName: regCompanyName,
+      companyName: regCompanyName.trim() || 'Individual Client',
       phone: regPhone,
       isRegistered: true,
     });
@@ -218,13 +218,13 @@ export default function ClientDashboard({
 
   if (clientProfile && !clientProfile.isRegistered) {
     return (
-      <div id="client-registration-panel" className="bg-white border border-slate-200 rounded-3xl p-8 max-w-2xl mx-auto shadow-xl my-6 animate-fade-in text-slate-800">
+      <div id="client-registration-panel" className="bg-white border border-slate-200 rounded-2xl p-8 max-w-2xl mx-auto shadow-xl my-6 animate-fade-in text-slate-800 border-t-4 border-t-[#0f172a]">
         <div className="text-center space-y-3 mb-6">
-          <div className="h-12 w-12 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto text-blue-600">
-            <Lock className="w-6 h-6 animate-pulse" />
+          <div className="h-12 w-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto text-[#0f172a]">
+            <Lock className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">Isolated Corporate Client Gateway</h2>
-          <p className="text-xs text-slate-500 font-medium">Authenticate your secure office node session or apply for a direct technical dispatch SLA contract.</p>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">Client Portal</h2>
+          <p className="text-xs text-slate-500 font-medium">Sign in to your account or register as an Individual or Corporate Client to request on-demand technical support.</p>
         </div>
 
         {/* Form selection tabs */}
@@ -232,54 +232,54 @@ export default function ClientDashboard({
           <button
             type="button"
             onClick={() => setActiveGateTab('login')}
-            className={`py-2 px-4 rounded-xl text-xs font-bold font-sans transition-all flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-4 rounded-xl text-xs font-bold font-sans transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               activeGateTab === 'login' 
-                ? 'bg-white text-slate-950 shadow-sm' 
+                ? 'bg-[#0f172a] text-white shadow-sm' 
                 : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             <Key className="w-3.5 h-3.5" />
-            Corporate Sign In
+            Existing Client Sign In
           </button>
           <button
             type="button"
             onClick={() => setActiveGateTab('register')}
-            className={`py-2 px-4 rounded-xl text-xs font-bold font-sans transition-all flex items-center justify-center gap-1.5 ${
+            className={`py-2 px-4 rounded-xl text-xs font-bold font-sans transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               activeGateTab === 'register' 
-                ? 'bg-white text-slate-950 shadow-sm' 
+                ? 'bg-[#0f172a] text-white shadow-sm' 
                 : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            Request SLA Node
+            New Client Registration
           </button>
         </div>
 
         {activeGateTab === 'login' ? (
           <form onSubmit={handleClientLogin} className="space-y-4 animate-fade-in">
-            <div className="bg-blue-50/50 border border-blue-200/60 p-4 rounded-2xl space-y-1">
-              <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest block font-sans">Authorized Access Only</span>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Enter your verified email. Unlisted accounts will be blocked at the security perimeter. Complete control resides within the headquarters.</p>
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
+              <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Existing Client Sign In</span>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Enter your registered email address to access your client support dashboard.</p>
             </div>
 
             {loginError && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
-                <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
+              <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
+                <ShieldAlert className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
                 <span>{loginError}</span>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 block">Registered Corporate Email Address</label>
+              <label className="text-xs font-bold text-slate-700 block">Email Address <span className="text-red-500">*</span></label>
               <div className="relative">
                 <input
                   id="client-login-email"
                   type="email"
                   required
-                  placeholder="e.g., s.jenkins@ecooffice.com"
+                  placeholder="e.g., s.jenkins@ecooffice.com or alex.smith@gmail.com"
                   value={loginEmail}
                   onChange={(e) => { setLoginEmail(e.target.value); setLoginError(''); }}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl pl-3.5 pr-10 py-3 text-sm focus:outline-blue-600 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl pl-3.5 pr-10 py-3 text-sm focus:outline-[#0f172a] font-semibold"
                 />
               </div>
             </div>
@@ -287,61 +287,65 @@ export default function ClientDashboard({
             <button
               id="client-btn-login-submit"
               type="submit"
-              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-3 rounded-2xl text-sm shadow-lg transition-all text-center flex items-center justify-center gap-2 cursor-pointer mt-2"
+              className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-black py-3 rounded-2xl text-sm shadow-md transition-all text-center flex items-center justify-center gap-2 cursor-pointer mt-2"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              Verify &amp; Establish Secure Remote Session
+              Sign In to Client Portal
             </button>
           </form>
         ) : (
           <form onSubmit={handleRegisterClient} className="space-y-4 animate-fade-in">
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
+              <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Individual or Corporate Client Registration</span>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Fill in your contact details below to activate your client account. Fields marked with <span className="text-red-500 font-bold">*</span> are required.</p>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Full Legal Name</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Full Name <span className="text-red-500">*</span></label>
                 <input
                   id="client-reg-name"
                   type="text"
                   required
-                  placeholder="Sarah Jenkins"
+                  placeholder="e.g., Sarah Jenkins"
                   value={regName}
                   onChange={(e) => setRegName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-blue-500 focus:ring-1 focus:ring-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Corporate Email Address</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Email Address <span className="text-red-500">*</span></label>
                 <input
                   id="client-reg-email"
                   type="email"
                   required
-                  placeholder="s.jenkins@ecooffice.com"
+                  placeholder="e.g., sarah.j@example.com"
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-blue-500 focus:ring-1 focus:ring-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                 />
               </div>
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Company / Institution Name</label>
-                <input
-                  id="client-reg-company"
-                  type="text"
-                  required
-                  placeholder="EcoOffice Corp"
-                  value={regCompanyName}
-                  onChange={(e) => setRegCompanyName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-blue-500 focus:ring-1 focus:ring-blue-500 font-semibold"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Callback Phone number</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Mobile / Contact Phone Number <span className="text-red-500">*</span></label>
                 <input
                   id="client-reg-phone"
-                  type="text"
+                  type="tel"
                   required
                   placeholder="+1 (555) 303-4929"
                   value={regPhone}
                   onChange={(e) => setRegPhone(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-blue-500 focus:ring-1 focus:ring-blue-500 font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Company / Organization Name <span className="text-slate-400 font-normal">(Optional)</span></label>
+                <input
+                  id="client-reg-company"
+                  type="text"
+                  placeholder="e.g., EcoOffice Corp (Leave blank for Individual)"
+                  value={regCompanyName}
+                  onChange={(e) => setRegCompanyName(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                 />
               </div>
             </div>
@@ -349,9 +353,9 @@ export default function ClientDashboard({
             <button
               id="client-btn-submit-registration"
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3 rounded-2xl text-sm shadow-lg shadow-blue-500/25 transition-all text-center flex items-center justify-center gap-2 transform active:scale-95 cursor-pointer mt-2"
+              className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-black py-3 rounded-2xl text-sm shadow-md transition-all text-center flex items-center justify-center gap-2 transform active:scale-95 cursor-pointer mt-2"
             >
-              Create Profile &amp; Unlock Active Dashboards
+              Create Account &amp; Access Dashboard
             </button>
           </form>
         )}
@@ -409,10 +413,10 @@ export default function ClientDashboard({
           </div>
           <div>
             <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none font-sans flex items-center gap-1.5">
-              Secure Isolated sandbox <span className="bg-emerald-100 border border-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded text-[8.5px] font-bold">Authorized Session</span>
+              Client Account <span className="bg-emerald-100 border border-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded text-[8.5px] font-bold">Active Session</span>
             </div>
             <div className="text-xs font-bold text-slate-800 mt-1">
-              Currently Logged In: <strong id="cli-logged-in-badge" className="text-blue-600 font-extrabold">{clientProfile?.name} ({clientProfile?.companyName || 'Corporate Profile'})</strong> &bull; <span className="text-[11px] text-slate-500 font-normal">{clientProfile?.email}</span>
+              Currently Logged In: <strong id="cli-logged-in-badge" className="text-[#0f172a] font-extrabold">{clientProfile?.name} ({clientProfile?.companyName || 'Corporate Profile'})</strong> &bull; <span className="text-[11px] text-slate-500 font-normal">{clientProfile?.email}</span>
             </div>
           </div>
         </div>
@@ -421,7 +425,7 @@ export default function ClientDashboard({
           <button
             id="client-btn-logout"
             onClick={() => {
-              // Reset client session back to unregistered state to show secure gateway selection
+              // Reset client session back to unregistered state to show portal selection
               onUpdateClientProfile({
                 id: 'client_' + Date.now(),
                 name: '',
@@ -431,10 +435,10 @@ export default function ClientDashboard({
                 isRegistered: false
               });
             }}
-            className="px-4 py-2 rounded-xl text-xs font-extrabold bg-white border border-rose-100 hover:border-rose-200 text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            className="px-4 py-2 rounded-xl text-xs font-extrabold bg-white border border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-100 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             <LogOut className="w-3.5 h-3.5" />
-            Logout &amp; Lock Node
+            Sign Out
           </button>
         </div>
       </div>
@@ -678,14 +682,14 @@ export default function ClientDashboard({
                       </div>
                     </div>
 
-                    {/* SLA & Service Performance Matrix Card */}
-                    <div className="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-[24px] p-5 flex gap-4 items-center relative overflow-hidden shadow-lg">
+                    {/* SLA & Service Performance Card */}
+                    <div className="bg-[#0f172a] text-white rounded-[24px] p-5 flex gap-4 items-center relative overflow-hidden shadow-lg border-t-2 border-t-emerald-500">
                       <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
-                        <Activity className="w-5 h-5 text-indigo-300 animate-pulse" />
+                        <Activity className="w-5 h-5 text-emerald-400 animate-pulse" />
                       </div>
                       <div className="flex-grow z-10">
-                        <div className="text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest block mb-1">
-                          SLA Performance &amp; Service Matrix
+                        <div className="text-[11px] font-extrabold text-emerald-400 uppercase tracking-widest block mb-1">
+                          SLA Performance &amp; Service Metrics
                         </div>
                         <p className="text-xs text-slate-200 font-medium font-sans">Real-time resolution analytics and corporate dispatch standards:</p>
                         <div className="flex gap-6 mt-3">
@@ -920,7 +924,7 @@ export default function ClientDashboard({
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-[28px] p-6 max-w-xl w-full shadow-2xl relative text-left">
             <h3 className="text-lg font-black text-slate-950 flex items-center gap-2">
-              <Award className="text-blue-600 w-5 h-5" /> File New Green IT Incident Ticket
+              <Award className="text-blue-600 w-5 h-5" /> File New Incident Ticket
             </h3>
             <p className="text-xs text-slate-500 mt-1">Configure operating parameters and pricing preferences dynamically.</p>
 

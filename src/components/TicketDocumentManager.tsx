@@ -140,12 +140,12 @@ export default function TicketDocumentManager({
         </div>
         <div className="flex items-center gap-1.5 text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span>FIPS 140-2 Compliant</span>
+          <span>Secure Encrypted Storage</span>
         </div>
       </div>
 
-      <p className="text-xs text-[#5a5a40] leading-relaxed font-sans">
-        Upload hardware system settings, infrastructure diagrams, contract annexures, error dumps, balance sheets, and resolution screenshots. All files are converted to isolated, local AES-256 simulated hashes.
+      <p className="text-xs text-slate-500 leading-relaxed font-sans">
+        Upload hardware settings, diagrams, error logs, photos, and resolution screenshots to support your technical ticket.
       </p>
 
       {/* Upload Drag-and-Drop Arena */}

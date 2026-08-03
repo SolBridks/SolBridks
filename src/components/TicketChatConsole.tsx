@@ -105,10 +105,10 @@ export default function TicketChatConsole({
     
     let messageBody = '';
     if (recipientRole === 'client') {
-      messageBody = `SolBridks HQ Control Room Message for Ticket #${issue.id} ("${issue.title}"):\n\nHello ${issue.clientName}, our secure gateway is active. The technician setup is on standby under strict SLA guidelines. We have updated your ticket status to [${issue.status.toUpperCase()}]. Please upload any documents or view details securely here: https://solbridks.net/ticket/${issue.id}`;
+      messageBody = `SolBridks HQ Message for Ticket #${issue.id} ("${issue.title}"):\n\nHello ${issue.clientName}, your support ticket message center is active. The technician setup is ready under SLA guidelines. Status: [${issue.status.toUpperCase()}]. Please upload documents or view details here: https://solbridks.net/ticket/${issue.id}`;
     } else {
       const expertName = issue.expertName || 'Assigned Expert';
-      messageBody = `SolBridks HQ Control Room Dispatch for Tech Specialist ${expertName}:\n\nAction required on Ticket #${issue.id} ("${issue.title}"). Client: ${issue.clientName}. Location coordinates [${issue.clientLat}, ${issue.clientLng}]. Urgently check attachments under FIPS-compliant storage. Respond via Secure Chat.`;
+      messageBody = `SolBridks HQ Dispatch for Specialist ${expertName}:\n\nAction required on Ticket #${issue.id} ("${issue.title}"). Client: ${issue.clientName}. Location coordinates [${issue.clientLat}, ${issue.clientLng}]. Check attachments and respond via Secure Chat.`;
     }
 
     const waUrl = `https://wa.me/${cleanNum}?text=${encodeURIComponent(messageBody)}`;
@@ -116,24 +116,24 @@ export default function TicketChatConsole({
   };
 
   return (
-    <div className="bg-[#fbfcfa] border border-[#e9e7df] rounded-2xl overflow-hidden shadow-sm flex flex-col h-[400px]">
+    <div className="bg-[#fbfcfa] border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col h-[400px]">
       
       {/* Header Panel */}
-      <div className="bg-[#f0f2ea] border-b border-[#e9e7df] p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shrink-0">
+      <div className="bg-slate-50 border-b border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shrink-0">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-[#5a5a40]" />
+          <MessageSquare className="w-4 h-4 text-[#dc2626]" />
           <div>
-            <h4 className="text-xs font-black text-[#2c3124] uppercase tracking-wider">
-              E2E Encrypted Chat Link
+            <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+              Encrypted Support Chat
             </h4>
-            <p className="text-[10px] text-[#5a5a40]">Direct operational message sync for Ticket #{issue.id.substring(0,6)}</p>
+            <p className="text-[10px] text-slate-500">Direct message sync for Ticket #{issue.id.substring(0,6)}</p>
           </div>
         </div>
 
         {/* Security badge */}
         <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full self-start sm:self-center">
           <Lock className="w-3.5 h-3.5 text-emerald-600" />
-          <span>AES-256 SECURE CHANNEL</span>
+          <span>SECURE MESSAGING</span>
         </div>
       </div>
 

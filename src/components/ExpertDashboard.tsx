@@ -27,6 +27,27 @@ import TicketLifecycleTracker from './TicketLifecycleTracker';
 import TicketDocumentManager from './TicketDocumentManager';
 import TicketChatConsole from './TicketChatConsole';
 
+export const ALL_INDUSTRIES_DOMAINS = [
+  'Real Estate & Property Management',
+  'Construction, Electrical & Plumbing',
+  'Landscaping & Groundskeeping',
+  'Cleaning, Janitorial & Sanitation',
+  'Logistics, Freight & Transportation',
+  'Childcare, Daycare & Family Services',
+  'Home Repair & Handyman Services',
+  'Hospitality, Events & Catering',
+  'IT & Cloud Infrastructure',
+  'Software & Web Solutions',
+  'Telecom, Networks & Fiber',
+  'Cybersecurity & Compliance',
+  'Data Systems & AI Solutions',
+  'Hardware & Electronics Repair',
+  'Enterprise ERP & Business Systems',
+  'Healthcare & Medical Support',
+  'Financial, Fintech & Accounting',
+  'Industrial Automation & Robotics'
+];
+
 // Tactile Slide-to-Accept Track controller representing zero emission technician acceptance
 const SlideToAccept = ({ onAccept }: { onAccept: () => void }) => {
   const [sliderVal, setSliderVal] = useState(0); 
@@ -157,11 +178,23 @@ export default function ExpertDashboard({
   const [showRegForm, setShowRegForm] = useState(false);
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
+  const [regPhone, setRegPhone] = useState('');
   const [regSkills, setRegSkills] = useState('');
+  const [regDomains, setRegDomains] = useState<string[]>(['IT & Cloud Infrastructure', 'Software & Web Solutions']);
   const [regVehicle, setRegVehicle] = useState<'electric-bike' | 'public-transit' | 'ev' | 'hybrid'>('electric-bike');
   const [regBankName, setRegBankName] = useState('');
   const [regBankAccount, setRegBankAccount] = useState('');
   const [regBankRouting, setRegBankRouting] = useState('');
+  const [regBankInstitution, setRegBankInstitution] = useState('');
+  const [regBankTransit, setRegBankTransit] = useState('');
+
+  const toggleRegDomain = (domain: string) => {
+    setRegDomains(prev => 
+      prev.includes(domain) 
+        ? prev.filter(d => d !== domain)
+        : [...prev, domain]
+    );
+  };
 
   // Tab State: work = active dispatch radar, history = previous solutions, finance = bank edits
   const [expertTab, setExpertTab] = useState<'work' | 'history' | 'finance'>('work');
@@ -244,19 +277,26 @@ export default function ExpertDashboard({
     onRegisterExpert({
       name: regName,
       email: regEmail,
+      phone: regPhone,
       skills: regSkills.split(',').map(s => s.trim()).filter(Boolean),
+      domains: regDomains.length > 0 ? regDomains : ['IT & Cloud Infrastructure'],
       vehicleType: regVehicle,
-      bankName: regBankName || 'Commonwealth Green Reserve',
+      bankName: regBankName || 'TD Canada Trust / Chase Bank',
       bankAccount: regBankAccount || '******8218',
       bankRouting: regBankRouting || '021000021',
+      bankInstitution: regBankInstitution || '004',
+      bankTransit: regBankTransit || '12345',
     });
 
     setRegName('');
     setRegEmail('');
+    setRegPhone('');
     setRegSkills('');
     setRegBankName('');
     setRegBankAccount('');
     setRegBankRouting('');
+    setRegBankInstitution('');
+    setRegBankTransit('');
     setShowRegForm(false);
   };
 
@@ -278,24 +318,24 @@ export default function ExpertDashboard({
     <div id="expert-dashboard-panel" className="space-y-6">
       
       {/* Upper expert status check bar (Confidential - hides other experts completely) */}
-      <div className="bg-white border border-[#e9e7df] rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-t-4 border-t-[#0f172a]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#f0f2ea] border border-[#dce0d1] flex items-center justify-center">
-            <Users className="w-5 h-5 text-[#5a5a40]" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center">
+            <Users className="w-5 h-5 text-[#0f172a]" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-[#2c3124] flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               {selectedExpertId && activeExpert ? (
-                <>Active Expert Node: <span className="text-[#5a5a40] font-black">{activeExpert.name}</span></>
+                <>Active Specialist: <span className="text-[#dc2626] font-black">{activeExpert.name}</span></>
               ) : (
-                <>Specialist Secure Node Gateway</>
+                <>Specialist Sign In Portal</>
               )}
             </h2>
-            <p className="text-xs text-[#8a8d81] font-sans">
+            <p className="text-xs text-slate-500 font-sans">
               {selectedExpertId && activeExpert ? (
                 <span className="font-mono">Specialist ID: {activeExpert.id} &bull; {activeExpert.email}</span>
               ) : (
-                <>On-demand field &amp; infra technical solution dispatch perimeter. Verified specialist authentication required.</>
+                <>On-demand technical services and support dispatch portal. Verified specialist sign in required.</>
               )}
             </p>
           </div>
@@ -305,16 +345,16 @@ export default function ExpertDashboard({
           <div>
             <button
               onClick={() => onSelectExpert(null)}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#f4f3ed] border border-rose-100 text-[#3d4234] hover:text-rose-700 hover:bg-rose-50 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-white border border-rose-100 text-slate-700 hover:text-rose-700 hover:bg-rose-50 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Disconnect &amp; Lock Node
+              Sign Out
             </button>
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="text-[10px] bg-[#f0f2ea] border border-[#dce0d1] text-[#5a5a40] px-2.5 py-1.5 rounded-lg font-mono font-bold flex items-center gap-1">
-              <Lock className="w-3.5 h-3.5" /> GATEWAY LOCK ACTIVE
+            <span className="text-[10px] bg-slate-100 border border-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg font-mono font-bold flex items-center gap-1">
+              <Lock className="w-3.5 h-3.5" /> Portal Signed Out
             </span>
           </div>
         )}
@@ -378,7 +418,7 @@ export default function ExpertDashboard({
             
             {/* Bank Details section */}
             <div className="md:col-span-2 border-t border-[#e9e7df] pt-3">
-              <span className="text-[10px] font-bold text-[#8a8d81] uppercase tracking-wider block mb-2">Direct Deposit Payout Bank Node Coordinates</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Direct Deposit Bank Account Details</span>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[#3d4234] block mb-1">Bank Name</label>
@@ -451,12 +491,12 @@ export default function ExpertDashboard({
                 <Sliders className="w-6 h-6" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-[#2c3124]">Specialist Node: Verification Pending</h3>
-                <p className="text-xs text-[#8a8d81] leading-relaxed">
-                  Greetings, <span className="font-extrabold text-[#3d4234]">{activeExpert.name}</span>. Your technical credentials and bank routing configurations have been safely lodged in our master ledger.
+                <h3 className="text-xl font-bold text-slate-900">Specialist Profile: Verification Pending</h3>
+                <p className="text-xs text-slate-500 leading-relaxed font-sans">
+                  Greetings, <span className="font-extrabold text-slate-800">{activeExpert.name}</span>. Your technical credentials and bank details have been safely registered.
                 </p>
                 <p className="text-xs text-slate-500 font-medium font-sans">
-                  To guarantee absolute corporate excellence and SLA safety standards, the <strong>Quality Assurance Control Room (Operator Team)</strong> will audit and confirm your profile shortly.
+                  To guarantee high quality and SLA compliance, our <strong>Operations Team</strong> will review and activate your profile shortly.
                 </p>
               </div>
 
@@ -1060,34 +1100,34 @@ export default function ExpertDashboard({
           </div>
         );
       })() : (
-        <div id="expert-onboarding-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in my-4">
+        <div id="expert-onboarding-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-fade-in my-4 font-sans">
           
-          {/* Private Active profile secure gateway side */}
-          <div className="lg:col-span-5 bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-sm space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-[#e9e7df]">
-              <Users className="w-5 h-5 text-[#5a5a40]" />
+          {/* Specialist sign in side */}
+          <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 border-t-4 border-t-[#0f172a]">
+            <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
+              <Users className="w-5 h-5 text-[#0f172a]" />
               <div>
-                <h3 className="font-extrabold text-sm text-[#2c3124]">Specialist Secure Sign In</h3>
-                <p className="text-[10px] text-[#8a8d81]">Enter your verified specialist credentials to login.</p>
+                <h3 className="font-extrabold text-sm text-slate-900">Existing Specialist Sign In</h3>
+                <p className="text-[10px] text-slate-500">Enter your verified specialist credentials to sign in.</p>
               </div>
             </div>
 
             <form onSubmit={handleExpertLogin} className="space-y-4 pt-1 animate-fade-in">
-              <div className="bg-[#fcfcfa] border border-[#e9e7df] p-3 rounded-xl space-y-1">
-                <span className="text-[9px] font-black text-[#5a5a40] uppercase tracking-widest block font-sans">Specialist perimeter</span>
-                <p className="text-[10.5px] text-[#8a8d81] leading-relaxed font-sans">
-                  Unauthorized profile sweeps are strictly forbidden. Access credentials are encrypted and mapped only via verified corporate routes.
+              <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl space-y-1">
+                <span className="text-[9px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Specialist Portal Access</span>
+                <p className="text-[10.5px] text-slate-500 leading-relaxed font-sans">
+                  Please enter your registered email address to access your specialist technical dashboard and assigned tickets.
                 </p>
               </div>
 
               {expertLoginError && (
-                <div className="bg-rose-50 border border-rose-200 text-rose-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-1.5 leading-normal">
+                <div className="bg-amber-50 border border-amber-200 text-amber-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-1.5 leading-normal">
                   <span>⚠️ {expertLoginError}</span>
                 </div>
               )}
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-[#3d4234] block">Registered Specialist Email</label>
+                <label className="text-xs font-bold text-slate-700 block">Email Address <span className="text-red-500">*</span></label>
                 <input
                   id="expert-login-email"
                   type="email"
@@ -1095,110 +1135,152 @@ export default function ExpertDashboard({
                   placeholder="e.g., elena.r@solbridks.com"
                   value={expertLoginEmail}
                   onChange={(e) => { setExpertLoginEmail(e.target.value); setExpertLoginError(''); }}
-                  className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-xs px-3.5 py-2.5 rounded-xl focus:outline-[#5a5a40] text-[#3d4234] font-semibold"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs px-3.5 py-2.5 rounded-xl focus:outline-[#0f172a] text-slate-900 font-semibold"
                 />
               </div>
 
               <button
                 id="expert-btn-login-submit"
                 type="submit"
-                className="w-full bg-[#5a5a40] hover:bg-[#4a4a34] text-white font-extrabold py-2.5 rounded-xl text-xs transition cursor-pointer text-center block shadow-sm mt-3"
+                className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-extrabold py-3 rounded-xl text-xs transition cursor-pointer text-center block shadow-sm mt-3"
               >
-                Authenticate Specialist Session
+                Sign In to Specialist Portal
               </button>
             </form>
           </div>
 
           {/* Registration form side */}
-          <div className="lg:col-span-7 bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-sm space-y-4">
-            <div className="pb-2 border-b border-[#e9e7df]">
-              <h3 className="font-extrabold text-sm text-[#2c3124]">Register as Technical Specialist / Solutions Provider</h3>
-              <p className="text-[10px] text-[#8a8d81]">Are you a technical contractor? Set up your legal profile & routes to start receiving corporate SLA dispatch contracts.</p>
+          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="pb-2 border-b border-slate-200">
+              <h3 className="font-extrabold text-sm text-slate-900">Register as Technical Specialist</h3>
+              <p className="text-[10px] text-slate-500">Set up your technical profile, contact details, and dispatch capability to start accepting service contracts.</p>
             </div>
 
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10.5px] font-bold text-[#3d4234] block mb-1">Full Legal Name</label>
+                  <label className="text-[10.5px] font-bold text-slate-700 block mb-1">Full Name <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     required
-                    placeholder="E.g., Elena Rostova"
+                    placeholder="e.g., Elena Rostova"
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
-                    className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-xs px-3 py-1.5 rounded-xl focus:outline-[#5a5a40] text-[#3d4234]"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-xl focus:outline-[#0f172a] text-slate-900 font-medium"
                   />
                 </div>
                 <div>
-                  <label className="text-[10.5px] font-bold text-[#3d4234] block mb-1">Email Address</label>
+                  <label className="text-[10.5px] font-bold text-slate-700 block mb-1">Email Address <span className="text-red-500">*</span></label>
                   <input
                     type="email"
                     required
-                    placeholder="elena.r@solbridks.com"
+                    placeholder="e.g., elena.r@solbridks.com"
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
-                    className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-xs px-3 py-1.5 rounded-xl focus:outline-[#5a5a40] text-[#3d4234]"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-xl focus:outline-[#0f172a] text-slate-900 font-medium"
                   />
                 </div>
+                <div>
+                  <label className="text-[10.5px] font-bold text-slate-700 block mb-1">Mobile / Contact Phone Number <span className="text-red-500">*</span></label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+1 (555) 019-2831"
+                    value={regPhone}
+                    onChange={(e) => setRegPhone(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-xl focus:outline-[#0f172a] text-slate-900 font-medium"
+                  />
+                </div>
+                <div className="sm:col-span-2 space-y-1.5">
+                  <label className="text-[10.5px] font-bold text-slate-700 block">
+                    Industries &amp; Domains <span className="text-red-500">*</span> <span className="text-slate-400 font-normal lowercase">(Select all that apply)</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    {ALL_INDUSTRIES_DOMAINS.map((domain) => {
+                      const isSelected = regDomains.includes(domain);
+                      return (
+                        <button
+                          key={domain}
+                          type="button"
+                          onClick={() => toggleRegDomain(domain)}
+                          className={`text-xs px-3 py-1.5 rounded-lg border font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            isSelected
+                              ? 'bg-[#0f172a] text-white border-[#0f172a] shadow-xs'
+                              : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100'
+                          }`}
+                        >
+                          {isSelected && <span className="text-emerald-400 font-extrabold text-xs">✓</span>}
+                          {domain}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 <div className="sm:col-span-2">
-                  <label className="text-[10.5px] font-bold text-[#3d4234] block mb-1">Technical Specialties (comma separated)</label>
+                  <label className="text-[10.5px] font-bold text-slate-700 block mb-1">Technical Specialties &amp; Skills <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     required
-                    placeholder="Fiber Optic splicing, Router config, DB Optimization..."
+                    placeholder="e.g., Fiber Optic splicing, Cisco Networking, General Plumbing, Property Maintenance, HVAC Repair"
                     value={regSkills}
                     onChange={(e) => setRegSkills(e.target.value)}
-                    className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-xs px-3 py-1.5 rounded-xl focus:outline-[#5a5a40] text-[#3d4234]"
+                    className="w-full bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-xl focus:outline-[#0f172a] text-slate-900 font-medium"
                   />
                 </div>
-                <div className="sm:col-span-2">
-                  <label className="text-[10.5px] font-bold text-[#3d4234] block mb-1">Service Dispatch Vehicle &amp; Toolkit Capability</label>
-                  <select
-                    value={regVehicle}
-                    onChange={(e: any) => setRegVehicle(e.target.value)}
-                    className="w-full bg-white border border-[#e9e7df] text-xs px-3 py-1.5 rounded-xl focus:outline-[#5a5a40] text-[#3d4234]"
-                  >
-                    <option value="electric-bike">Rapid Mobile Toolkit (Lite diagnostics, diagnostic backpack)</option>
-                    <option value="public-transit">Standard Transit Pack (Multi-purpose testing equipment)</option>
-                    <option value="ev">Heavy Deployment Rig (Desktop servers, heavy server rails)</option>
-                    <option value="hybrid">Advanced Commercial Pack (Full network repair &amp; patching tools)</option>
-                  </select>
-                </div>
 
-                <div className="sm:col-span-2 border-t border-[#e9e7df] pt-3">
-                  <span className="text-[10px] font-bold text-[#8a8d81] uppercase tracking-wider block mb-2">Direct bank account coordinates (for commercial payouts)</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="sm:col-span-2 border-t border-slate-200 pt-3">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Direct deposit bank info (USA &amp; Canada) <span className="text-slate-400 font-normal lowercase">(optional at registration)</span></span>
+                  <p className="text-[11px] text-slate-400 mb-2">Provide your US ABA Routing or Canadian Transit &amp; Institution numbers for automatic payouts.</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     <div>
-                      <label className="text-[9.5px] font-bold text-[#3d4234] block mb-0.5">Bank Name</label>
+                      <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Bank Name <span className="text-slate-400 font-normal">(Optional)</span></label>
                       <input
                         type="text"
-                        required
-                        placeholder="Global Commerce Treasury"
+                        placeholder="e.g., TD Canada Trust, Chase"
                         value={regBankName}
                         onChange={(e) => setRegBankName(e.target.value)}
-                        className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#5a5a40] text-[#3d4234]"
+                        className="w-full bg-slate-50 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#0f172a] text-slate-900"
                       />
                     </div>
                     <div>
-                      <label className="text-[9.5px] font-bold text-[#3d4234] block mb-0.5">Account Number</label>
+                      <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Account Number <span className="text-slate-400 font-normal">(Optional)</span></label>
                       <input
                         type="text"
-                        required
-                        placeholder="******8218"
+                        placeholder="e.g., ******8218"
                         value={regBankAccount}
                         onChange={(e) => setRegBankAccount(e.target.value)}
-                        className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#5a5a40] text-[#3d4234]"
+                        className="w-full bg-slate-50 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#0f172a] text-slate-900"
                       />
                     </div>
                     <div>
-                      <label className="text-[9.5px] font-bold text-[#3d4234] block mb-0.5">Routing Number</label>
+                      <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">ABA Routing No. (USA) <span className="text-slate-400 font-normal">(Optional)</span></label>
                       <input
                         type="text"
-                        required
-                        placeholder="021000021"
+                        placeholder="e.g., 021000021"
                         value={regBankRouting}
                         onChange={(e) => setRegBankRouting(e.target.value)}
-                        className="w-full bg-[#fdfcf8] border border-[#e9e7df] text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#5a5a40] text-[#3d4234]"
+                        className="w-full bg-slate-50 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#0f172a] text-slate-900"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Institution No. (Canada - 3 Digits) <span className="text-slate-400 font-normal">(Optional)</span></label>
+                      <input
+                        type="text"
+                        placeholder="e.g., 004 (TD) or 003 (RBC)"
+                        value={regBankInstitution}
+                        onChange={(e) => setRegBankInstitution(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#0f172a] text-slate-900"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Transit / Branch No. (Canada - 5 Digits) <span className="text-slate-400 font-normal">(Optional)</span></label>
+                      <input
+                        type="text"
+                        placeholder="e.g., 12345"
+                        value={regBankTransit}
+                        onChange={(e) => setRegBankTransit(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 text-[11px] px-2.5 py-1.5 rounded-lg focus:outline-[#0f172a] text-slate-900"
                       />
                     </div>
                   </div>
@@ -1207,9 +1289,9 @@ export default function ExpertDashboard({
 
               <button
                 type="submit"
-                className="w-full bg-[#5a5a40] hover:bg-[#4a4a34] text-white font-extrabold py-2.5 rounded-xl text-xs transition cursor-pointer text-center block shadow-sm"
+                className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-extrabold py-3 rounded-xl text-xs transition cursor-pointer text-center block shadow-sm"
               >
-                Register &amp; Activate solutions provider profile
+                Create Account &amp; Activate Specialist Profile
               </button>
             </form>
           </div>

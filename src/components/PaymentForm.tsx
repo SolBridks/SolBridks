@@ -83,10 +83,10 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
           {/* Form Header */}
           <div className="flex items-center justify-between border-b border-[#e9e7df] pb-4 font-sans">
             <div>
-              <h3 className="text-lg font-bold text-[#2c3124] flex items-center gap-2">
-                <CreditCard className="text-[#5a5a40] w-5 h-5" /> Secure SolBridks Payment Gateway
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <CreditCard className="text-[#dc2626] w-5 h-5" /> Secure Payment Checkout
               </h3>
-              <p className="text-xs text-[#8a8d81]">Your connection is 256-bit AES encrypted</p>
+              <p className="text-xs text-slate-500">Your payment details are protected with 256-bit SSL encryption</p>
             </div>
             <span className="flex items-center gap-1 bg-[#f0f2ea] border border-[#dce0d1] text-[#5a5a40] px-2 py-1 rounded text-[10px] font-bold uppercase">
               <ShieldCheck className="w-3.5 h-3.5" /> SECURE SSL
