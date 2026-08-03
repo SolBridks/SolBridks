@@ -387,24 +387,6 @@ export default function ClientDashboard({
   return (
     <div id="client-dashboard-panel" className="space-y-6">
       
-      {/* Top action header with vibrant Blue and modern shadow */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-200 rounded-2xl p-5 shadow-md">
-        <div>
-          <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-            <Activity className="text-blue-600 w-5 h-5 animate-pulse" /> Client IT Center
-          </h2>
-          <p className="text-xs text-slate-500 font-medium font-sans">Log systems, hardware defects, or structural IT needs with SolBridks zero-emission technician network</p>
-        </div>
-        <button
-          id="client-btn-new-issue"
-          onClick={() => setShowCreateModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-sm shadow-md shadow-blue-500/25 transition-all flex items-center gap-2 transform active:scale-95"
-        >
-          <PlusCircle className="w-4 h-4 text-white" />
-          Request IT Specialist
-        </button>
-      </div>
-
       {/* Authorized Profile block (Private - hides other profiles completely) */}
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-xs">
         <div className="flex items-center gap-2.5">
@@ -416,12 +398,20 @@ export default function ClientDashboard({
               Client Account <span className="bg-emerald-100 border border-emerald-200 text-emerald-800 px-1.5 py-0.5 rounded text-[8.5px] font-bold">Active Session</span>
             </div>
             <div className="text-xs font-bold text-slate-800 mt-1">
-              Currently Logged In: <strong id="cli-logged-in-badge" className="text-[#0f172a] font-extrabold">{clientProfile?.name} ({clientProfile?.companyName || 'Corporate Profile'})</strong> &bull; <span className="text-[11px] text-slate-500 font-normal">{clientProfile?.email}</span>
+              Currently Logged In: <strong id="cli-logged-in-badge" className="text-[#0f172a] font-extrabold">{clientProfile?.name} ({clientProfile?.companyName || 'Individual Client'})</strong> &bull; <span className="text-[11px] text-slate-500 font-normal">{clientProfile?.email}</span> {clientProfile?.phone && <span className="text-[11px] text-slate-500">&bull; {clientProfile.phone}</span>}
             </div>
           </div>
         </div>
         
-        <div>
+        <div className="flex items-center gap-2">
+          <button
+            id="client-btn-new-issue"
+            onClick={() => setShowCreateModal(true)}
+            className="bg-[#0f172a] hover:bg-slate-900 text-white font-extrabold px-4 py-2 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer transform active:scale-95"
+          >
+            <PlusCircle className="w-4 h-4 text-emerald-400" />
+            + New Service Ticket
+          </button>
           <button
             id="client-btn-logout"
             onClick={() => {

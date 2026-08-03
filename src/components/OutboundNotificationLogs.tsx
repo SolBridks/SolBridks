@@ -44,7 +44,7 @@ export default function OutboundNotificationLogs({ notifications, onClearAll }: 
           </div>
           <div>
             <h3 className="text-sm font-extrabold tracking-wide text-slate-900 font-sans">
-              Real-time SMS &amp; Email Dispatch Alerts
+              Real-time SMS &amp; Email Alerts
             </h3>
             <div className="text-[11px] text-slate-500 font-medium">
               Live automated SLA notifications &amp; event logs ({notifications.length} logged events)

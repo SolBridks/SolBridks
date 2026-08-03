@@ -178,11 +178,13 @@ export default function OperatorDashboard({
   };
 
   // Inline Client Profile edits
-  const handleSaveClientProfileDetails = (name: string, email: string) => {
+  const handleSaveClientProfileDetails = (name: string, email: string, phone?: string, companyName?: string) => {
     onUpdateClientProfile({
       ...clientProfile,
       name,
-      email
+      email,
+      phone: phone !== undefined ? phone : clientProfile.phone,
+      companyName: companyName !== undefined ? companyName : clientProfile.companyName
     });
   };
 
@@ -625,53 +627,64 @@ export default function OperatorDashboard({
         <div className="bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-sm space-y-4 animate-fade-in text-[#3d4234]">
           <div className="flex items-center justify-between border-b border-[#e9e7df] pb-3">
             <div>
-              <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#3d4234]">Client Accounts Ledger</h3>
-              <p className="text-xs text-[#8a8d81] font-sans">HQ Master Admin portfolio access to registered client profiles, locations, and verification statuses.</p>
+              <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#3d4234]">Clients Ledger</h3>
+              <p className="text-xs text-[#8a8d81] font-sans">HQ Master Admin portfolio access to registered individual &amp; corporate client profiles.</p>
             </div>
-            <span className="text-[10px] bg-[#f0f2ea] text-slate-800 border px-2 py-1 rounded font-mono font-bold">1 Registered Client Module</span>
+            <span className="text-[10px] bg-[#f0f2ea] text-slate-800 border border-[#dce0d1] px-2 py-1 rounded font-mono font-bold">Client Accounts Record</span>
           </div>
 
-          <div id="operator-client-card" className="border border-[#e9e7df] p-4 bg-[#f9f9f5] rounded-3xl grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            <div className="md:col-span-4 space-y-2 font-sans">
-              <span className="text-[9px] uppercase tracking-wider bg-slate-200 px-2 py-0.5 rounded font-bold font-mono">Client ID: {clientProfile.id}</span>
-              <div className="space-y-1">
-                <div className="text-sm font-bold block">{clientProfile.name}</div>
-                <div className="text-xs text-[#8a8d81] block">{clientProfile.email}</div>
-                <div className="text-xs text-[#5a5a40] block font-mono">Location Coordinates: [{(issues[0]?.clientLat || 45.4215).toFixed(4)}, {(issues[0]?.clientLng || -75.6972).toFixed(4)}]</div>
+          <div id="operator-client-card" className="border border-[#e9e7df] p-5 bg-[#f9f9f5] rounded-2xl space-y-4 font-sans">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-3 border-b border-[#e9e7df]">
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Client Login ID / Email</span>
+                <span className="text-xs font-extrabold text-slate-900 block font-mono">{clientProfile.email || 'Not registered'}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Full Name</span>
+                <span className="text-xs font-extrabold text-slate-900 block">{clientProfile.name || 'Not provided'}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Contact Phone Number</span>
+                <span className="text-xs font-extrabold text-slate-900 block">{clientProfile.phone || 'Not provided'}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Organization / Corporate</span>
+                <span className="text-xs font-extrabold text-slate-900 block">{clientProfile.companyName || 'Individual Client'}</span>
               </div>
             </div>
 
-            <div className="md:col-span-3">
-              <div className="text-xs font-semibold">Registration Status</div>
-              {clientProfile.isRegistered ? (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-green-50 text-green-700 border border-green-200 px-2.5 py-1 rounded-full font-bold uppercase mt-1">
-                  Active Member (Verified)
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-red-50 text-red-700 border border-red-200 px-2.5 py-1 rounded-full font-bold uppercase mt-1">
-                  Unregistered/Guest Mode
-                </span>
-              )}
-            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-1">
+              <div>
+                <span className="text-[10.5px] font-bold text-slate-500 block">Registration &amp; Authorization State</span>
+                {clientProfile.isRegistered ? (
+                  <span className="inline-flex items-center gap-1.5 text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full font-bold uppercase mt-1">
+                    ✓ Active Member (Verified)
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full font-bold uppercase mt-1">
+                    ⚠️ Guest / Unregistered State
+                  </span>
+                )}
+              </div>
 
-            <div className="md:col-span-5 text-right space-y-2">
-              <div className="text-xs font-semibold text-slate-500 font-sans">Account Controls</div>
-              <div className="flex flex-wrap gap-2 justify-end">
+              <div className="flex flex-wrap gap-2">
                 <button
                   onClick={handleToggleClientRegistration}
-                  className={`px-3 py-1.5 text-xs font-extrabold uppercase rounded-lg border cursor-pointer ${clientProfile.isRegistered ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[#0f172a] text-white hover:bg-slate-900'}`}
+                  className={`px-3.5 py-2 text-xs font-extrabold uppercase rounded-xl border cursor-pointer transition ${clientProfile.isRegistered ? 'bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100' : 'bg-[#0f172a] text-white hover:bg-slate-900'}`}
                 >
-                  {clientProfile.isRegistered ? 'Deregister/Block Client' : 'Manually Register Client'}
+                  {clientProfile.isRegistered ? 'Deregister Client' : 'Manually Register Client'}
                 </button>
                 <button
                   onClick={() => {
-                    const nextName = prompt("Edit client name:", clientProfile.name);
-                    const nextEmail = prompt("Edit client email:", clientProfile.email);
-                    if (nextName && nextEmail) {
-                      handleSaveClientProfileDetails(nextName, nextEmail);
+                    const nextName = prompt("Edit client full name:", clientProfile.name);
+                    const nextEmail = prompt("Edit client login email:", clientProfile.email);
+                    const nextPhone = prompt("Edit contact phone number:", clientProfile.phone || '');
+                    const nextCompany = prompt("Edit company/organization name (leave blank for Individual):", clientProfile.companyName || '');
+                    if (nextName !== null && nextEmail !== null) {
+                      handleSaveClientProfileDetails(nextName, nextEmail, nextPhone || '', nextCompany || '');
                     }
                   }}
-                  className="bg-slate-200 hover:bg-slate-300 text-[#3d4234] border border-[#e9e7df] px-3 py-1.5 text-xs font-bold rounded-lg cursor-pointer"
+                  className="bg-white hover:bg-slate-100 text-[#3d4234] border border-[#e9e7df] px-3.5 py-2 text-xs font-extrabold rounded-xl cursor-pointer shadow-xs"
                 >
                   Modify Credentials
                 </button>
