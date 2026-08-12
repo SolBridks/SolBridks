@@ -20,13 +20,17 @@ import {
   Cpu,
   LogOut,
   Key,
-  Lock
+  Lock,
+  Eye,
+  EyeOff,
+  Smartphone
 } from 'lucide-react';
 import { ITIssue, ExpertProfile, PricingMethod, TicketDocument, ChatMessage } from '../types';
 import { generateSustainabilityEcoStats } from '../utils/storage';
 import TicketLifecycleTracker from './TicketLifecycleTracker';
 import TicketDocumentManager from './TicketDocumentManager';
 import TicketChatConsole from './TicketChatConsole';
+import OTPVerificationModal from './OTPVerificationModal';
 
 export const ALL_INDUSTRIES_DOMAINS = [
   'Real Estate & Property Management',
@@ -164,18 +168,32 @@ export default function ExpertDashboard({
 
   // Private Expert Login States
   const [expertLoginEmail, setExpertLoginEmail] = useState('');
+  const [expertLoginPassword, setExpertLoginPassword] = useState('');
+  const [showExpertLoginPassword, setShowExpertLoginPassword] = useState(false);
   const [expertLoginError, setExpertLoginError] = useState('');
 
   const handleExpertLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const found = experts.find(ex => ex.email.toLowerCase().trim() === expertLoginEmail.toLowerCase().trim());
-    if (found) {
-      setExpertLoginError('');
-      setExpertLoginEmail('');
-      onSelectExpert(found.id);
-    } else {
-      setExpertLoginError('Verification failed. No engineering specialist matches this email address in our directory.');
+    const query = expertLoginEmail.toLowerCase().trim();
+    const found = experts.find(ex => 
+      ex.email.toLowerCase().trim() === query || (ex.phone && ex.phone.trim() === query)
+    );
+
+    if (!found) {
+      setExpertLoginError('No engineering specialist profile matches this email or phone number.');
+      return;
     }
+
+    const expectedPassword = found.password || 'password123';
+    if (expertLoginPassword !== expectedPassword) {
+      setExpertLoginError('Incorrect password entered. Please check your credentials and try again.');
+      return;
+    }
+
+    setExpertLoginError('');
+    setExpertLoginEmail('');
+    setExpertLoginPassword('');
+    onSelectExpert(found.id);
   };
 
   // Registration Form States
@@ -183,6 +201,9 @@ export default function ExpertDashboard({
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPhone, setRegPhone] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regError, setRegError] = useState('');
   const [regSkills, setRegSkills] = useState('');
   const [regDomains, setRegDomains] = useState<string[]>(['IT & Cloud Infrastructure', 'Software & Web Solutions']);
   const [regVehicle, setRegVehicle] = useState<'electric-bike' | 'public-transit' | 'ev' | 'hybrid'>('electric-bike');
@@ -191,6 +212,62 @@ export default function ExpertDashboard({
   const [regBankRouting, setRegBankRouting] = useState('');
   const [regBankInstitution, setRegBankInstitution] = useState('');
   const [regBankTransit, setRegBankTransit] = useState('');
+
+  // OTP Verification Modal state for Specialist Portal
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otpTarget, setOtpTarget] = useState('');
+  const [otpChannel, setOtpChannel] = useState<'sms' | 'email'>('sms');
+
+  const handleInitiateRegistration = (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegError('');
+
+    if (!regPassword || regPassword.length < 6) {
+      setRegError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (regPhone) {
+      setOtpTarget(regPhone);
+      setOtpChannel('sms');
+    } else {
+      setOtpTarget(regEmail);
+      setOtpChannel('email');
+    }
+
+    setShowOtpModal(true);
+  };
+
+  const handleOtpVerifiedSuccess = () => {
+    setShowOtpModal(false);
+
+    onRegisterExpert({
+      name: regName,
+      email: regEmail,
+      phone: regPhone,
+      password: regPassword,
+      skills: regSkills.split(',').map(s => s.trim()).filter(Boolean),
+      domains: regDomains.length > 0 ? regDomains : ['IT & Cloud Infrastructure'],
+      vehicleType: regVehicle,
+      bankName: regBankName || 'TD Canada Trust / Chase Bank',
+      bankAccount: regBankAccount || '******8218',
+      bankRouting: regBankRouting || '021000021',
+      bankInstitution: regBankInstitution || '004',
+      bankTransit: regBankTransit || '12345',
+      isPhoneVerified: true
+    } as any);
+
+    setRegName('');
+    setRegEmail('');
+    setRegPhone('');
+    setRegPassword('');
+    setRegSkills('');
+    setRegBankName('');
+    setRegBankAccount('');
+    setRegBankRouting('');
+    setRegBankInstitution('');
+    setRegBankTransit('');
+  };
 
   const toggleRegDomain = (domain: string) => {
     setRegDomains(prev => 
@@ -1110,7 +1187,7 @@ export default function ExpertDashboard({
               }`}
             >
               <Key className="w-3.5 h-3.5" />
-              Existing Specialist Sign In
+              Sign In
             </button>
             <button
               type="button"
@@ -1122,19 +1199,12 @@ export default function ExpertDashboard({
               }`}
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              New Specialist Registration
+              Register
             </button>
           </div>
 
           {activeGateTab === 'login' ? (
             <form onSubmit={handleExpertLogin} className="space-y-4 animate-fade-in">
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
-                <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Existing Specialist Sign In</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-sans">
-                  Please enter your registered email address to access your specialist technical dashboard and assigned tickets.
-                </p>
-              </div>
-
               {expertLoginError && (
                 <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
                   <span>⚠️ {expertLoginError}</span>
@@ -1142,16 +1212,41 @@ export default function ExpertDashboard({
               )}
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 block">Email Address <span className="text-red-500">*</span></label>
+                <label className="text-xs font-bold text-slate-700 block">Email Address or Phone <span className="text-red-500">*</span></label>
                 <input
                   id="expert-login-email"
-                  type="email"
+                  type="text"
                   required
-                  placeholder="e.g., elena.r@solbridks.com"
+                  placeholder="e.g., elena.r@solbridks.net or +1 (555) 291-8842"
                   value={expertLoginEmail}
                   onChange={(e) => { setExpertLoginEmail(e.target.value); setExpertLoginError(''); }}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl px-3.5 py-3 text-sm focus:outline-[#0f172a] font-semibold"
                 />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-slate-700 block">Password <span className="text-red-500">*</span></label>
+                  <span className="text-[10px] text-slate-400 font-semibold">(Default demo password: <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700">password123</code>)</span>
+                </div>
+                <div className="relative">
+                  <input
+                    id="expert-login-password"
+                    type={showExpertLoginPassword ? 'text' : 'password'}
+                    required
+                    placeholder="Enter your password"
+                    value={expertLoginPassword}
+                    onChange={(e) => { setExpertLoginPassword(e.target.value); setExpertLoginError(''); }}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl pl-3.5 pr-10 py-3 text-sm focus:outline-[#0f172a] font-semibold"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowExpertLoginPassword(!showExpertLoginPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
+                  >
+                    {showExpertLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <button
@@ -1164,11 +1259,12 @@ export default function ExpertDashboard({
               </button>
             </form>
           ) : (
-            <form onSubmit={handleRegister} className="space-y-4 animate-fade-in">
-              <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
-                <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">New Specialist Registration</span>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Fill in your technical profile, contact details, and domains below to activate your specialist profile. Fields marked with <span className="text-red-500 font-bold">*</span> are required.</p>
-              </div>
+            <form onSubmit={handleInitiateRegistration} className="space-y-4 animate-fade-in">
+              {regError && (
+                <div className="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
+                  <span>⚠️ {regError}</span>
+                </div>
+              )}
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1194,7 +1290,7 @@ export default function ExpertDashboard({
                       className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                     />
                   </div>
-                  <div className="sm:col-span-2">
+                  <div>
                     <label className="text-xs font-bold text-slate-700 block mb-1">Mobile / Contact Phone Number <span className="text-red-500">*</span></label>
                     <input
                       type="tel"
@@ -1204,6 +1300,27 @@ export default function ExpertDashboard({
                       onChange={(e) => setRegPhone(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                     />
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Create Password <span className="text-red-500">*</span></label>
+                    <div className="relative">
+                      <input
+                        type={showRegPassword ? 'text' : 'password'}
+                        required
+                        minLength={6}
+                        placeholder="Create a password (min 6 chars)"
+                        value={regPassword}
+                        onChange={(e) => setRegPassword(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-3.5 pr-10 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowRegPassword(!showRegPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
+                      >
+                        {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -1307,10 +1424,21 @@ export default function ExpertDashboard({
                 type="submit"
                 className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-black py-3 rounded-2xl text-sm shadow-md transition-all text-center flex items-center justify-center gap-2 transform active:scale-95 cursor-pointer mt-2"
               >
-                Create Account &amp; Activate Specialist Profile
+                <Smartphone className="w-4 h-4 text-emerald-400" /> Send OTP &amp; Activate Specialist Profile
               </button>
             </form>
           )}
+
+          {/* OTP Verification Modal */}
+          <OTPVerificationModal
+            isOpen={showOtpModal}
+            onClose={() => setShowOtpModal(false)}
+            recipient={otpTarget}
+            channel={otpChannel}
+            onVerifySuccess={handleOtpVerifiedSuccess}
+            title="Verify Specialist Registration OTP"
+            subtitle="An OTP code has been dispatched. Enter the code below to complete your specialist technical profile registration."
+          />
         </div>
       )}
     </div>

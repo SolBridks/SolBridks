@@ -20,13 +20,17 @@ import {
   FileUp,
   LogOut,
   Key,
-  ShieldCheck
+  ShieldCheck,
+  Eye,
+  EyeOff,
+  Smartphone
 } from 'lucide-react';
 import { ITIssue, PricingMethod, IssueStatus, ClientProfile, TicketDocument, ChatMessage } from '../types';
 import { generateSustainabilityEcoStats } from '../utils/storage';
 import TicketLifecycleTracker from './TicketLifecycleTracker';
 import TicketDocumentManager from './TicketDocumentManager';
 import TicketChatConsole from './TicketChatConsole';
+import OTPVerificationModal from './OTPVerificationModal';
 
 interface ClientDashboardProps {
   issues: ITIssue[];
@@ -116,33 +120,81 @@ export default function ClientDashboard({
   // Client registration and login details
   const [activeGateTab, setActiveGateTab] = useState<'login' | 'register'>('login');
   const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
+
   const [regName, setRegName] = useState(clientProfile?.name || '');
   const [regEmail, setRegEmail] = useState(clientProfile?.email || '');
   const [regCompanyName, setRegCompanyName] = useState(clientProfile?.companyName || '');
   const [regPhone, setRegPhone] = useState(clientProfile?.phone || '');
+  const [regPassword, setRegPassword] = useState('');
+  const [showRegPassword, setShowRegPassword] = useState(false);
+  const [regError, setRegError] = useState('');
+
+  // OTP Verification Modal state
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otpTarget, setOtpTarget] = useState('');
+  const [otpChannel, setOtpChannel] = useState<'sms' | 'email'>('sms');
 
   const handleClientLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const found = clients.find(c => c.email.toLowerCase().trim() === loginEmail.toLowerCase().trim() && c.isRegistered);
-    if (found) {
-      setLoginError('');
-      setLoginEmail('');
-      onSelectClient?.(found.id);
-    } else {
-      setLoginError('Verification failed. No registered client profile matches this email address in our system records.');
+    const query = loginEmail.toLowerCase().trim();
+    // Search clients list by email or phone
+    const found = clients.find(c => 
+      (c.email.toLowerCase().trim() === query || c.phone.trim() === query) && c.isRegistered
+    );
+
+    if (!found) {
+      setLoginError('No registered client profile matches this username/email address.');
+      return;
     }
+
+    // Password validation (default fallback password is 'password123' for seeded accounts)
+    const expectedPassword = found.password || 'password123';
+    if (loginPassword !== expectedPassword) {
+      setLoginError('Incorrect password entered. Please try again.');
+      return;
+    }
+
+    setLoginError('');
+    setLoginEmail('');
+    setLoginPassword('');
+    onSelectClient?.(found.id);
   };
 
-  const handleRegisterClient = (e: React.FormEvent) => {
+  const handleInitiateRegistration = (e: React.FormEvent) => {
     e.preventDefault();
+    setRegError('');
+
+    if (!regPassword || regPassword.length < 6) {
+      setRegError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    // Set OTP recipient and channel
+    if (regPhone) {
+      setOtpTarget(regPhone);
+      setOtpChannel('sms');
+    } else {
+      setOtpTarget(regEmail);
+      setOtpChannel('email');
+    }
+
+    setShowOtpModal(true);
+  };
+
+  const handleOtpVerifiedSuccess = () => {
+    setShowOtpModal(false);
     onUpdateClientProfile({
-      id: clientProfile?.id || 'client_usr',
+      id: clientProfile?.id || `client_${Date.now()}`,
       name: regName,
       email: regEmail,
       companyName: regCompanyName.trim() || 'Individual Client',
       phone: regPhone,
+      password: regPassword,
       isRegistered: true,
+      isPhoneVerified: true,
     });
   };
 
@@ -239,7 +291,7 @@ export default function ClientDashboard({
             }`}
           >
             <Key className="w-3.5 h-3.5" />
-            Existing Client Sign In
+            Sign In
           </button>
           <button
             type="button"
@@ -251,17 +303,12 @@ export default function ClientDashboard({
             }`}
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            New Client Registration
+            Register
           </button>
         </div>
 
         {activeGateTab === 'login' ? (
           <form onSubmit={handleClientLogin} className="space-y-4 animate-fade-in">
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
-              <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Existing Client Sign In</span>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Enter your registered email address to access your client support dashboard.</p>
-            </div>
-
             {loginError && (
               <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
                 <ShieldAlert className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
@@ -270,17 +317,42 @@ export default function ClientDashboard({
             )}
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 block">Email Address <span className="text-red-500">*</span></label>
+              <label className="text-xs font-bold text-slate-700 block">Email or Phone Number <span className="text-red-500">*</span></label>
               <div className="relative">
                 <input
                   id="client-login-email"
-                  type="email"
+                  type="text"
                   required
-                  placeholder="e.g., s.jenkins@ecooffice.com or alex.smith@gmail.com"
+                  placeholder="e.g., s.jenkins@ecooffice.com or +1 (555) 303-4929"
                   value={loginEmail}
                   onChange={(e) => { setLoginEmail(e.target.value); setLoginError(''); }}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl pl-3.5 pr-10 py-3 text-sm focus:outline-[#0f172a] font-semibold"
                 />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-bold text-slate-700 block">Password <span className="text-red-500">*</span></label>
+                <span className="text-[10px] text-slate-400 font-semibold">(Default demo password: <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700">password123</code>)</span>
+              </div>
+              <div className="relative">
+                <input
+                  id="client-login-password"
+                  type={showLoginPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Enter your password"
+                  value={loginPassword}
+                  onChange={(e) => { setLoginPassword(e.target.value); setLoginError(''); }}
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl pl-3.5 pr-10 py-3 text-sm focus:outline-[#0f172a] font-semibold"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
+                >
+                  {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
@@ -294,11 +366,13 @@ export default function ClientDashboard({
             </button>
           </form>
         ) : (
-          <form onSubmit={handleRegisterClient} className="space-y-4 animate-fade-in">
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-1">
-              <span className="text-[10px] font-black text-[#0f172a] uppercase tracking-widest block font-sans">Individual or Corporate Client Registration</span>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-sans">Fill in your contact details below to activate your client account. Fields marked with <span className="text-red-500 font-bold">*</span> are required.</p>
-            </div>
+          <form onSubmit={handleInitiateRegistration} className="space-y-4 animate-fade-in">
+            {regError && (
+              <div className="bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl text-xs font-semibold font-sans animate-fade-in flex items-start gap-2">
+                <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
+                <span>{regError}</span>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -348,6 +422,28 @@ export default function ClientDashboard({
                   className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
                 />
               </div>
+              <div className="sm:col-span-2">
+                <label className="text-xs font-bold text-slate-700 block mb-1">Create Password <span className="text-red-500">*</span></label>
+                <div className="relative">
+                  <input
+                    id="client-reg-password"
+                    type={showRegPassword ? 'text' : 'password'}
+                    required
+                    minLength={6}
+                    placeholder="Create a password (minimum 6 characters)"
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-3.5 pr-10 py-2.5 text-sm focus:outline-[#0f172a] font-semibold"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowRegPassword(!showRegPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
+                  >
+                    {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <button
@@ -355,10 +451,21 @@ export default function ClientDashboard({
               type="submit"
               className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-black py-3 rounded-2xl text-sm shadow-md transition-all text-center flex items-center justify-center gap-2 transform active:scale-95 cursor-pointer mt-2"
             >
-              Create Account &amp; Access Dashboard
+              <Smartphone className="w-4 h-4 text-emerald-400" /> Send OTP &amp; Create Account
             </button>
           </form>
         )}
+
+        {/* OTP Verification Modal */}
+        <OTPVerificationModal
+          isOpen={showOtpModal}
+          onClose={() => setShowOtpModal(false)}
+          recipient={otpTarget}
+          channel={otpChannel}
+          onVerifySuccess={handleOtpVerifiedSuccess}
+          title="Verify Client Registration OTP"
+          subtitle="An OTP code has been dispatched. Enter the code below to complete your client profile setup."
+        />
       </div>
     );
   }

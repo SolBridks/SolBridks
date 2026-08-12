@@ -19,6 +19,8 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     id: 'exp_1',
     name: 'Elena Rostova',
     email: 'elena.r@solbridks.net',
+    phone: '+1 (555) 291-8842',
+    password: 'password123',
     skills: ['Hardware Repair', 'Energy Efficient Upgrades', 'Network Security'],
     domains: ['Hardware & Electronics Repair', 'Telecom, Networks & Fiber', 'IT & Cloud Infrastructure'],
     vehicleType: 'electric-bike',
@@ -30,6 +32,7 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     currentLat: 25,
     currentLng: 30,
     isVerifiedByQA: true,
+    isPhoneVerified: true,
     bankName: 'Eco Green Credit Union',
     bankAccount: '*******9421',
     bankRouting: '*****301'
@@ -38,6 +41,8 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     id: 'exp_2',
     name: 'Marcus Chen',
     email: 'marcus.c@solbridks.net',
+    phone: '+1 (555) 831-2091',
+    password: 'password123',
     skills: ['Software Troubleshooting', 'Cloud Optimization', 'OS Tuneups'],
     domains: ['Software & Web Solutions', 'IT & Cloud Infrastructure', 'Data Systems & AI Solutions'],
     vehicleType: 'public-transit',
@@ -49,6 +54,7 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     currentLat: 75,
     currentLng: 20,
     isVerifiedByQA: true,
+    isPhoneVerified: true,
     bankName: 'Sol Alliance Savings',
     bankAccount: '*******5032',
     bankRouting: '*****842'
@@ -57,6 +63,8 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     id: 'exp_3',
     name: 'Amina Diallo',
     email: 'amina.d@solbridks.net',
+    phone: '+1 (555) 492-[0192]',
+    password: 'password123',
     skills: ['Cybersecurity auditing', 'Cloud instance management', 'Network Repair'],
     domains: ['Cybersecurity & Compliance', 'IT & Cloud Infrastructure', 'Enterprise ERP & Business Systems'],
     vehicleType: 'ev',
@@ -68,6 +76,7 @@ export const DEFAULT_EXPERTS: ExpertProfile[] = [
     currentLat: 60,
     currentLng: 80,
     isVerifiedByQA: true,
+    isPhoneVerified: true,
     bankName: 'Global Capital Merchant Trust',
     bankAccount: '*******1189',
     bankRouting: '*****581'
@@ -245,7 +254,9 @@ export function getClients(): ClientProfile[] {
         email: 's.jenkins@ecooffice.com',
         companyName: 'EcoOffice Corp',
         phone: '+1 (555) 303-4929',
-        isRegistered: true
+        password: 'password123',
+        isRegistered: true,
+        isPhoneVerified: true
       }
     ];
     localStorage.setItem('solbridks_clients_v2', JSON.stringify(defaultClients));
@@ -267,7 +278,9 @@ export function getClientProfile(): ClientProfile {
       email: 's.jenkins@ecooffice.com',
       companyName: 'EcoOffice Corp',
       phone: '+1 (555) 303-4929',
-      isRegistered: true // Set to true now that we seed it as registered
+      password: 'password123',
+      isRegistered: true, // Set to true now that we seed it as registered
+      isPhoneVerified: true
     };
     localStorage.setItem('solbridks_client_profile_v1', JSON.stringify(defaultProfile));
     return defaultProfile;

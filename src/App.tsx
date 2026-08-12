@@ -1155,18 +1155,6 @@ export default function App() {
 
       </main>
 
-      {/* FOOTER */}
-      <footer className="bg-white border-t border-slate-200 mt-12 py-8 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 space-y-2 flex flex-col items-center">
-          <div className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="SolBridks" className="w-6 h-6 object-contain rounded-md" referrerPolicy="no-referrer" />
-            <span className="font-extrabold text-sm text-[#0f172a]">Sol<span className="text-[#dc2626]">Bridks</span></span>
-          </div>
-          <p className="font-semibold text-slate-700">SolBridks On-Demand Expert Technical Services &amp; Solutions</p>
-          <p>© 2026 SolBridks. Dedicated to high-availability corporate operations, secure cloud integrations, and enterprise hardware systems engineering.</p>
-        </div>
-      </footer>
-
       {/* PAYMENTS GATEWAY OVERLAY MODAL */}
       {showPaymentPortal && selectedIssueId && (
         <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">

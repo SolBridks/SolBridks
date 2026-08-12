@@ -87,13 +87,25 @@ export interface ITIssue {
   bidExpertName?: string;
 }
 
+export interface AuthUser {
+  id: string;
+  username: string; // email or phone number
+  passwordHash: string;
+  role: 'client' | 'expert' | 'operator';
+  isPhoneVerified: boolean;
+  isEmailVerified: boolean;
+  createdAt: string;
+}
+
 export interface ClientProfile {
   id: string;
   name: string;
   email: string;
   companyName: string;
   phone: string;
+  password?: string;
   isRegistered: boolean;
+  isPhoneVerified?: boolean;
 }
 
 export interface ExpertProfile {
@@ -101,6 +113,7 @@ export interface ExpertProfile {
   name: string;
   email: string;
   phone?: string;
+  password?: string;
   skills: string[];
   domains?: string[];
   vehicleType?: 'electric-bike' | 'public-transit' | 'ev' | 'hybrid'; // Legacy equipment tier representation
@@ -112,6 +125,7 @@ export interface ExpertProfile {
   currentLat: number;
   currentLng: number;
   isVerifiedByQA?: boolean; // New QA Admin confirmation state
+  isPhoneVerified?: boolean;
   bankName?: string; // Financial Routing fields
   bankAccount?: string;
   bankRouting?: string; // ABA Routing (USA)
