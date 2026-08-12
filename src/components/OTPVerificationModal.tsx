@@ -30,6 +30,29 @@ export default function OTPVerificationModal({
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const [dispatchStatus, setDispatchStatus] = useState<{ mode?: string; message?: string } | null>(null);
+
+  // Send OTP to backend API when code changes/modal opens
+  const dispatchOtpApi = async (code: string) => {
+    try {
+      const response = await fetch('/api/send-email-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: recipient,
+          otp: code,
+          portalType: title.toLowerCase().includes('specialist') ? 'specialist' : 'client'
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        setDispatchStatus({ mode: data.mode, message: data.message });
+      }
+    } catch (err) {
+      console.warn("Backend API dispatch notice:", err);
+    }
+  };
+
   // Generate a random 6-digit code on open
   useEffect(() => {
     if (isOpen) {
@@ -39,6 +62,7 @@ export default function OTPVerificationModal({
       setError('');
       setTimer(60);
       setResendSuccess(false);
+      dispatchOtpApi(code);
     }
   }, [isOpen]);
 
@@ -99,6 +123,7 @@ export default function OTPVerificationModal({
     setTimer(60);
     setError('');
     setResendSuccess(true);
+    dispatchOtpApi(newCode);
     setTimeout(() => setResendSuccess(false), 3000);
   };
 
@@ -161,11 +186,12 @@ export default function OTPVerificationModal({
           </span>
         </div>
 
-        {/* Simulated OTP Notification Banner */}
+        {/* OTP Dispatch Banner & Live API Status */}
         <div className="bg-emerald-50/90 border border-emerald-200/90 p-3.5 rounded-2xl text-xs space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
-              <KeyRound className="w-3.5 h-3.5 text-emerald-600" /> Simulated {channel.toUpperCase()} Dispatch
+              <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
+              {dispatchStatus?.mode === 'live_email' ? 'Live Email Dispatched via Resend API' : `OTP Dispatch (${channel.toUpperCase()})`}
             </span>
             <button
               type="button"
@@ -181,6 +207,11 @@ export default function OTPVerificationModal({
               {generatedOtp}
             </span>
           </div>
+          {dispatchStatus?.message && (
+            <div className="text-[10px] text-emerald-800 font-medium pt-1 border-t border-emerald-200/60 leading-tight">
+              {dispatchStatus.message}
+            </div>
+          )}
         </div>
 
         {/* OTP Input Form */}
