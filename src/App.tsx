@@ -1005,7 +1005,7 @@ export default function App() {
   const divEmail = "divakarcan75038@gmail.com";
 
   return (
-    <div className="min-h-screen bg-[#fdfcf8] text-[#3d4234] flex flex-col font-sans selection:bg-[#5a5a40] selection:text-white">
+    <div className="min-h-screen bg-slate-50/80 text-slate-900 flex flex-col font-sans selection:bg-[#0f172a] selection:text-white">
       
       {/* Brand Header & Global Scorecards */}
       <Header 
@@ -1107,7 +1107,7 @@ export default function App() {
                   }
                 }} className="space-y-4 mt-6">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase font-black tracking-widest text-[#8a8d81] block">
+                    <label className="text-[10px] uppercase font-black tracking-widest text-slate-500 block">
                       Security Passkey Signature
                     </label>
                     <input
@@ -1118,22 +1118,22 @@ export default function App() {
                         setAuthError('');
                       }}
                       placeholder="••••••••"
-                      className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-indigo-500 rounded-xl px-4 py-3 text-center font-mono text-lg tracking-widest text-slate-800 outline-none transition-all placeholder:text-slate-300"
+                      className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-slate-900 rounded-xl px-4 py-3 text-center font-mono text-lg tracking-widest text-slate-800 outline-none transition-all placeholder:text-slate-300"
                     />
-                    <span className="text-[9px] text-[#8a8d81] block text-center mt-1">
-                      💡 Owner/Admin Hint: enter <strong className="text-indigo-600">admin</strong> or <strong className="text-indigo-600">director</strong> to authorize entry
+                    <span className="text-[9px] text-slate-500 block text-center mt-1">
+                      💡 Owner/Admin Hint: enter <strong className="text-slate-900">admin</strong> or <strong className="text-slate-900">director</strong> to authorize entry
                     </span>
                   </div>
 
                   {authError && (
-                    <div className="bg-red-55 border border-red-200 text-red-800 p-3 rounded-xl text-[10.5px] font-bold text-center leading-relaxed">
+                    <div className="bg-red-50 border border-red-200 text-red-800 p-3 rounded-xl text-[10.5px] font-bold text-center leading-relaxed">
                       ⚠️ {authError}
                     </div>
                   )}
 
                   <button
                     type="submit"
-                    className="w-full bg-[#3d4234] hover:bg-[#2c3124] text-white font-black text-xs py-3 rounded-xl transition-all shadow-md active:scale-[0.98] cursor-pointer text-center uppercase tracking-wider"
+                    className="w-full bg-[#0f172a] hover:bg-slate-900 text-white font-black text-xs py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] cursor-pointer text-center uppercase tracking-wider"
                   >
                     Authenticate Signature
                   </button>
@@ -1156,16 +1156,20 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className="bg-white border-t border-[#e9e7df] mt-12 py-6 text-center text-xs text-[#8a8d81]">
-        <div className="max-w-7xl mx-auto px-4 space-y-2">
-          <p className="font-semibold text-[#3d4234]">SolBridks IT, Infrastructure & Support Solutions</p>
+      <footer className="bg-white border-t border-slate-200 mt-12 py-8 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 space-y-2 flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="SolBridks" className="w-6 h-6 object-contain rounded-md" referrerPolicy="no-referrer" />
+            <span className="font-extrabold text-sm text-[#0f172a]">Sol<span className="text-[#dc2626]">Bridks</span></span>
+          </div>
+          <p className="font-semibold text-slate-700">SolBridks On-Demand Expert Technical Services &amp; Solutions</p>
           <p>© 2026 SolBridks. Dedicated to high-availability corporate operations, secure cloud integrations, and enterprise hardware systems engineering.</p>
         </div>
       </footer>
 
       {/* PAYMENTS GATEWAY OVERLAY MODAL */}
       {showPaymentPortal && selectedIssueId && (
-        <div className="fixed inset-0 bg-[#3d4234]/70 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
           {(() => {
             const currentIssue = issues.find(i => i.id === selectedIssueId);
             if (!currentIssue) return null;

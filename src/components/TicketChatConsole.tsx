@@ -83,7 +83,7 @@ export default function TicketChatConsole({
         );
       case 'expert':
         return (
-          <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-wider bg-[#5a5a40] text-white px-1.5 py-0.5 rounded">
+          <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-wider bg-slate-800 text-white px-1.5 py-0.5 rounded">
             <Sparkles className="w-2.5 h-2.5" /> Tech{issue.expertName ? ` (${issue.expertName})` : ' Expert'}
           </span>
         );
@@ -124,16 +124,16 @@ export default function TicketChatConsole({
           <MessageSquare className="w-4 h-4 text-[#dc2626]" />
           <div>
             <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">
-              Encrypted Support Chat
+              Ticket Support Chat
             </h4>
-            <p className="text-[10px] text-slate-500">Direct message sync for Ticket #{issue.id.substring(0,6)}</p>
+            <p className="text-[10px] text-slate-500">Direct chat for Ticket #{issue.id.substring(0,6)}</p>
           </div>
         </div>
 
         {/* Security badge */}
         <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full self-start sm:self-center">
           <Lock className="w-3.5 h-3.5 text-emerald-600" />
-          <span>SECURE MESSAGING</span>
+          <span>PRIVATE CHAT</span>
         </div>
       </div>
 
@@ -142,9 +142,9 @@ export default function TicketChatConsole({
         
         {/* Initial automatic audit log event marker as standard visual style */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f9f9f5] border border-[#f0eee6] rounded-full text-[9px] text-[#8a8d81]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-[9px] text-slate-500 font-medium">
             <ShieldCheck className="w-3 h-3 text-emerald-600" />
-            <span>Secure handshake created; Session encrypted</span>
+            <span>Support chat connected &amp; ready</span>
           </div>
         </div>
 
@@ -194,17 +194,17 @@ export default function TicketChatConsole({
       </div>
 
       {/* Input messaging terminal */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-[#e9e7df] bg-slate-50 gap-2 flex items-center shrink-0">
+      <form onSubmit={handleSubmit} className="p-3 border-t border-slate-200 bg-slate-50 gap-2 flex items-center shrink-0">
         <input
           type="text"
           value={typedMessage}
           onChange={(e) => setTypedMessage(e.target.value)}
           placeholder={`Direct text to ${currentRole === 'operator' ? 'Client or Expert' : 'HQ Control room'}...`}
-          className="flex-1 text-xs border border-[#dce0d1] bg-white text-slate-800 p-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 font-sans"
+          className="flex-1 text-xs border border-slate-200 bg-white text-slate-800 p-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-slate-400 font-sans"
         />
         <button
           type="submit"
-          className="p-2 rounded-xl bg-slate-900 border border-slate-850 text-white hover:bg-slate-800 transition-all cursor-pointer shadow-md inline-flex items-center justify-center"
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-white hover:bg-slate-800 transition-all cursor-pointer shadow-md inline-flex items-center justify-center"
         >
           <Send className="w-4 h-4" />
         </button>
@@ -212,16 +212,16 @@ export default function TicketChatConsole({
 
       {/* HQ Admin Direct Telecommunication & WhatsApp Bridge UI */}
       {currentRole === 'operator' && (
-        <div className="bg-[#f0f2ea]/60 border-t border-[#e9e7df] p-3 space-y-2.5 shrink-0 text-slate-800">
+        <div className="bg-slate-100/80 border-t border-slate-200 p-3 space-y-2.5 shrink-0 text-slate-800">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-              <PhoneCall className="w-3 h-3 text-[#5a5a40]" /> Secure Telecom Gateways (WhatsApp)
+            <span className="text-[10px] font-black text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+              <PhoneCall className="w-3 h-3 text-slate-700" /> WhatsApp Quick Messages
             </span>
-            <span className="text-[8px] text-[#5a5a40]/75 tracking-tighter uppercase font-mono">Bypasses offline local UI limits</span>
+            <span className="text-[8px] text-slate-500 tracking-tighter uppercase font-mono">Send direct message via phone</span>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-2">
-            <div className="flex items-center gap-1.5 w-full sm:w-auto flex-1 bg-white border border-[#dce0d1] rounded-xl px-2.5 py-1.5 text-xs text-slate-800 shrink-0">
+            <div className="flex items-center gap-1.5 w-full sm:w-auto flex-1 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 shrink-0">
               <span className="text-[10px] text-slate-400 font-black font-mono">TO:</span>
               <input
                 type="text"

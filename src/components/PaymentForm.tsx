@@ -76,92 +76,92 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
   };
 
   return (
-    <div id="payment-gateway-dialog" className="bg-white border border-[#e9e7df] rounded-2xl p-6 shadow-2xl max-w-xl mx-auto text-[#3d4234]">
+    <div id="payment-gateway-dialog" className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl max-w-xl mx-auto text-slate-800 border-t-4 border-t-[#0f172a]">
       
       {!hasPaid ? (
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Form Header */}
-          <div className="flex items-center justify-between border-b border-[#e9e7df] pb-4 font-sans">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4 font-sans">
             <div>
               <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                 <CreditCard className="text-[#dc2626] w-5 h-5" /> Secure Payment Checkout
               </h3>
               <p className="text-xs text-slate-500">Your payment details are protected with 256-bit SSL encryption</p>
             </div>
-            <span className="flex items-center gap-1 bg-[#f0f2ea] border border-[#dce0d1] text-[#5a5a40] px-2 py-1 rounded text-[10px] font-bold uppercase">
-              <ShieldCheck className="w-3.5 h-3.5" /> SECURE SSL
+            <span className="flex items-center gap-1 bg-slate-100 border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> SECURE SSL
             </span>
           </div>
 
           {/* Pricing Summary */}
-          <div className="bg-[#f9f9f5] border border-[#e9e7df] rounded-xl p-4 space-y-3">
-            <div className="text-xs font-bold text-[#8a8d81] uppercase tracking-wider">Invoice Details</div>
+          <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 space-y-3">
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Invoice Details</div>
             
             <div className="flex justify-between text-xs">
-              <span className="text-[#8a8d81]">IT Solution Task</span>
-              <span className="font-semibold text-[#3d4234] line-clamp-1">{issue.title}</span>
+              <span className="text-slate-500">IT Solution Task</span>
+              <span className="font-semibold text-slate-900 line-clamp-1">{issue.title}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-[#8a8d81]">Technician Dispatch Fee</span>
-              <span className="font-semibold text-[#3d4234]">${((issue.price) * 0.85).toFixed(2)}</span>
+              <span className="text-slate-500">Technician Dispatch Fee</span>
+              <span className="font-semibold text-slate-900">${((issue.price) * 0.85).toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-[#8a8d81]">SolBridks Platform & Green CO₂ Offset</span>
-              <span className="font-semibold text-[#3d4234]">${((issue.price) * 0.15).toFixed(2)}</span>
+              <span className="text-slate-500">SolBridks Platform & Green CO₂ Offset</span>
+              <span className="font-semibold text-slate-900">${((issue.price) * 0.15).toFixed(2)}</span>
             </div>
 
-            <div className="h-[1px] bg-[#e9e7df] my-2" />
+            <div className="h-[1px] bg-slate-200 my-2" />
 
-            <div className="flex justify-between items-center bg-white p-2 rounded-lg border border-[#e9e7df]">
+            <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200">
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#5a5a40]" />
-                <span className="text-xs font-semibold text-[#5a5a40]">Core Service Insurance Included</span>
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span className="text-xs font-semibold text-slate-800">Core Service Insurance Included</span>
               </div>
-              <span className="text-[10px] text-[#8a8d81]">SLA-backed guarantee</span>
+              <span className="text-[10px] text-slate-500 font-bold">SLA-backed guarantee</span>
             </div>
 
-            <div className="flex justify-between items-center text-sm pt-2 font-bold text-[#2c3124] border-t border-[#e9e7df] mt-2">
+            <div className="flex justify-between items-center text-sm pt-2 font-bold text-slate-900 border-t border-slate-200 mt-2">
               <span>Total Amount</span>
-              <span className="text-xl text-[#5a5a40] font-extrabold">${Number(issue.price).toFixed(2)}</span>
+              <span className="text-xl text-slate-900 font-extrabold">${Number(issue.price).toFixed(2)}</span>
             </div>
           </div>
 
-          {/* Interactive Card Visualizer (Styled as premium Dark Moss linen card) */}
-          <div className="relative bg-gradient-to-br from-[#5a5a40] to-[#3d4234] border border-[#5a5a40]/30 p-5 rounded-xl h-44 flex flex-col justify-between overflow-hidden shadow-lg select-none text-[#faf9f6]">
+          {/* Interactive Card Visualizer (Styled as premium Dark Slate card with red accent) */}
+          <div className="relative bg-gradient-to-br from-[#0f172a] via-slate-900 to-slate-950 border border-slate-700 p-5 rounded-2xl h-44 flex flex-col justify-between overflow-hidden shadow-xl select-none text-white">
             {/* Ambient Background decoration */}
-            <div className="absolute right-0 bottom-0 w-32 h-32 bg-[#d4a373]/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute right-0 bottom-0 w-32 h-32 bg-[#dc2626]/20 rounded-full blur-2xl pointer-events-none" />
             
             <div className="flex justify-between items-start">
               <div>
-                <div className="text-[10px] font-bold text-[#e1e2da] tracking-widest uppercase">SolBridks Corporate Card</div>
-                <div className="text-[9px] text-[#d4a373] font-medium">Verified secure digital payment</div>
+                <div className="text-[10px] font-bold text-slate-300 tracking-widest uppercase">SolBridks Corporate Card</div>
+                <div className="text-[9px] text-[#dc2626] font-extrabold">Verified secure digital payment</div>
               </div>
-              <Lock className="w-4 h-4 text-[#e1e2da]" />
+              <Lock className="w-4 h-4 text-slate-300" />
             </div>
 
             <div className="my-2">
-              <div id="visual-card-number" className="font-mono text-lg tracking-widest text-[#faf9f6]">
+              <div id="visual-card-number" className="font-mono text-lg tracking-widest text-white">
                 {cardNumber || '•••• •••• •••• ••••'}
               </div>
             </div>
 
-            <div className="flex justify-between items-end ">
+            <div className="flex justify-between items-end">
               <div>
-                <label className="text-[8px] uppercase tracking-wider text-[#e1e2da] block">Cardholder</label>
-                <div id="visual-card-name" className="text-xs font-semibold uppercase text-[#faf9f6] tracking-wider">
+                <label className="text-[8px] uppercase tracking-wider text-slate-400 block">Cardholder</label>
+                <div id="visual-card-name" className="text-xs font-semibold uppercase text-white tracking-wider">
                   {cardName || 'YOUR FULL NAME'}
                 </div>
               </div>
               <div className="flex gap-4">
                 <div>
-                  <label className="text-[8px] uppercase tracking-wider text-[#e1e2da] block">Expiry</label>
-                  <div className="text-xs font-semibold font-mono text-[#faf9f6]">
+                  <label className="text-[8px] uppercase tracking-wider text-slate-400 block">Expiry</label>
+                  <div className="text-xs font-semibold font-mono text-white">
                     {expiry || 'MM/YY'}
                   </div>
                 </div>
                 <div>
-                  <label className="text-[8px] uppercase tracking-wider text-[#e1e2da] block">CVV</label>
-                  <div className="text-xs font-semibold font-mono text-[#faf9f6]">
+                  <label className="text-[8px] uppercase tracking-wider text-slate-400 block">CVV</label>
+                  <div className="text-xs font-semibold font-mono text-white">
                     {cvv || '•••'}
                   </div>
                 </div>
@@ -170,9 +170,9 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
           </div>
 
           {/* Inputs Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[#3d4234]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-800">
             <div>
-              <label className="text-xs font-medium text-[#3d4234] block mb-1">Card Number</label>
+              <label className="text-xs font-bold text-slate-700 block mb-1">Card Number</label>
               <input
                 id="payment-field-card-number"
                 type="text"
@@ -180,11 +180,11 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
                 value={cardNumber}
                 onChange={handleCardNumberChange}
                 required
-                className="w-full bg-white border border-[#e9e7df] text-[#3d4234] rounded-lg px-3 py-2 text-sm focus:outline-[#5a5a40] focus:ring-1 focus:ring-[#5a5a40]"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-3 py-2 text-sm focus:outline-[#0f172a] focus:ring-1 focus:ring-[#0f172a]"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-[#3d4234] block mb-1">Cardholder Name</label>
+              <label className="text-xs font-bold text-slate-700 block mb-1">Cardholder Name</label>
               <input
                 id="payment-field-card-name"
                 type="text"
@@ -192,11 +192,11 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
                 value={cardName}
                 onChange={(e) => setCardName(e.target.value)}
                 required
-                className="w-full bg-white border border-[#e9e7df] text-[#3d4234] rounded-lg px-3 py-2 text-sm focus:outline-[#5a5a40] focus:ring-1 focus:ring-[#5a5a40]"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-3 py-2 text-sm focus:outline-[#0f172a] focus:ring-1 focus:ring-[#0f172a]"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-[#3d4234] block mb-1">Expiry Date</label>
+              <label className="text-xs font-bold text-slate-700 block mb-1">Expiry Date</label>
               <input
                 id="payment-field-card-expiry"
                 type="text"
@@ -204,11 +204,11 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
                 value={expiry}
                 onChange={handleExpiryChange}
                 required
-                className="w-full bg-white border border-[#e9e7df] text-[#3d4234] rounded-lg px-3 py-2 text-sm focus:outline-[#5a5a40] focus:ring-1 focus:ring-[#5a5a40] text-center"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-3 py-2 text-sm focus:outline-[#0f172a] focus:ring-1 focus:ring-[#0f172a] text-center"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-[#3d4234] block mb-1">CVV Code</label>
+              <label className="text-xs font-bold text-slate-700 block mb-1">CVV Code</label>
               <input
                 id="payment-field-card-cvv"
                 type="password"
@@ -216,7 +216,7 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
                 value={cvv}
                 onChange={handleCvvChange}
                 required
-                className="w-full bg-white border border-[#e9e7df] text-[#3d4234] rounded-lg px-3 py-2 text-sm focus:outline-[#5a5a40] focus:ring-1 focus:ring-[#5a5a40] text-center"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-3 py-2 text-sm focus:outline-[#0f172a] focus:ring-1 focus:ring-[#0f172a] text-center"
               />
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
               type="button"
               onClick={onCancel}
               disabled={isProcessing}
-              className="flex-1 bg-white border border-[#e9e7df] hover:bg-gray-50 text-[#3d4234] font-semibold py-2 px-4 rounded-lg text-sm transition-all"
+              className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition-all"
             >
               Cancel Payment
             </button>
@@ -236,7 +236,7 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
               id="payment-btn-submit"
               type="submit"
               disabled={isProcessing}
-              className="flex-1 bg-[#5a5a40] hover:bg-[#4a4a34] text-white font-bold py-2 px-4 rounded-lg text-sm shadow-sm active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-1 bg-[#0f172a] hover:bg-slate-900 text-white font-extrabold py-3 px-4 rounded-xl text-sm shadow-md active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isProcessing ? (
                 <>
@@ -244,7 +244,7 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
                   Securing Funds...
                 </>
               ) : (
-                `Pay $${Number(issue.price).toFixed(2)} Securely`
+                `Pay ${Number(issue.price).toFixed(2)} Securely`
               )}
             </button>
           </div>
@@ -252,42 +252,42 @@ export default function PaymentForm({ issue, onPaymentSuccess, onCancel }: Payme
       ) : (
         /* Payment Complete Success Feedback state */
         <div className="text-center py-10 space-y-6">
-          <div className="w-16 h-16 bg-[#f0f2ea] border border-[#5a5a40] rounded-full flex items-center justify-center mx-auto shadow-sm">
-            <CheckCircle className="w-8 h-8 text-[#5a5a40] animate-pulse" />
+          <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center mx-auto shadow-sm">
+            <CheckCircle className="w-8 h-8 text-emerald-600 animate-pulse" />
           </div>
           <div>
-            <h4 className="text-xl font-bold text-[#2c3124]">Secure Authorization Succeeded</h4>
-            <p className="text-sm text-[#8a8d81] mt-1">Transaction approved and signed cryptographically.</p>
+            <h4 className="text-xl font-bold text-slate-900">Payment Successful!</h4>
+            <p className="text-sm text-slate-500 mt-1">Your transaction was processed securely. Receipt generated.</p>
           </div>
 
-          <div className="bg-[#f9f9f5] border border-[#e9e7df] rounded-2xl p-5 max-w-sm mx-auto text-left space-y-3 text-[#3d4234]">
-            <span className="text-[9px] bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-full uppercase font-bold tracking-wider float-right">
-              SLA VERIFIED
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 max-w-sm mx-auto text-left space-y-3 text-slate-800">
+            <span className="text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full uppercase font-extrabold tracking-wider float-right">
+              VERIFIED
             </span>
-            <div className="text-xs font-semibold text-[#8a8d81]">Transaction &amp; Service Compliance Audit</div>
+            <div className="text-xs font-bold text-slate-500">Receipt &amp; Service Summary</div>
             
-            <div className="text-[#3d4234] text-xs flex justify-between">
-              <span>Resolution Quality Audit:</span>
-              <span className="font-bold text-[#2c3124]">Passed 100%</span>
+            <div className="text-slate-800 text-xs flex justify-between">
+              <span>Quality Check:</span>
+              <span className="font-bold text-emerald-700">Passed 100%</span>
             </div>
-            <div className="text-[#3d4234] text-xs flex justify-between">
-              <span>SLA Response Window:</span>
-              <span className="font-bold text-[#5a5a40]">Met Under 15m</span>
+            <div className="text-slate-800 text-xs flex justify-between">
+              <span>Response Time:</span>
+              <span className="font-bold text-slate-900">Under 15 mins</span>
             </div>
-            <div className="text-[#3d4234] text-xs flex justify-between">
-              <span>Coverage Support Plan:</span>
-              <span className="font-bold text-[#d4a373]">Corporate Premium</span>
+            <div className="text-slate-800 text-xs flex justify-between">
+              <span>Service Guarantee:</span>
+              <span className="font-bold text-[#dc2626]">90-Day Warranty</span>
             </div>
 
-            <div className="h-[1px] bg-[#e9e7df] my-2" />
+            <div className="h-[1px] bg-slate-200 my-2" />
 
-            <div className="text-[10px] text-[#3d4234] flex items-center gap-1.5 bg-white border border-[#e9e7df] p-2 rounded-lg">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#5a5a40] shrink-0" />
-              <span>Full SLA coverage and corporate service warranty active.</span>
+            <div className="text-[10px] text-slate-700 flex items-center gap-1.5 bg-white border border-slate-200 p-2.5 rounded-xl">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Full service guarantee and 90-day warranty active.</span>
             </div>
           </div>
 
-          <p className="text-xs text-[#8a8d81]">Generating digital contract proof. One-way redirecting shortly...</p>
+          <p className="text-xs text-slate-500">Generating receipt... Redirecting shortly...</p>
         </div>
       )}
     </div>

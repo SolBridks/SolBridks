@@ -30,18 +30,26 @@ export default function Header({ currentRole, onRoleChange, issues }: HeaderProp
           
           {/* Brand Logo & Tagline */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0f172a] border border-slate-700 flex items-center justify-center shadow-md">
-              <div className="w-5 h-5 border-2 border-emerald-500 rounded-sm rotate-45 flex items-center justify-center">
-                <span className="font-extrabold text-[9px] text-white -rotate-45">SB</span>
-              </div>
+            <div className="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center shadow-md overflow-hidden p-1 shrink-0">
+              <img 
+                src="/logo.jpg" 
+                alt="SolBridks Logo" 
+                className="w-full h-full object-contain"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  // Fallback to SVG if image loading has issues
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/favicon.svg";
+                }}
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h1 className="text-xl font-black tracking-tight text-[#0f172a] font-sans">
-                  Sol<span className="text-emerald-600">Bridks</span>
+                <h1 className="text-2xl font-black tracking-tight text-[#0f172a] font-sans">
+                  Sol<span className="text-[#dc2626]">Bridks</span>
                 </h1>
               </div>
-              <p className="text-xs text-slate-500 font-medium">On demand Expert Services &amp; Solutions</p>
+              <p className="text-[11px] text-slate-500 font-bold tracking-tight">On demand Expert Services &amp; Solutions</p>
             </div>
           </div>
 

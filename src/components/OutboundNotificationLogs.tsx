@@ -53,9 +53,6 @@ export default function OutboundNotificationLogs({ notifications, onClearAll }: 
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
-            Automated Notifications Active
-          </span>
           {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
         </div>
       </div>

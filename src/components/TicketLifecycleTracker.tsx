@@ -18,12 +18,12 @@ interface TrackerProps {
 export default function TicketLifecycleTracker({ issue }: TrackerProps) {
   const status = issue.status;
 
-  // Professional enterprise lifecycle phases
+  // Simple, friendly lifecycle phases
   const phases = [
     {
       key: 'submission',
-      label: '1. Intake Audit',
-      description: 'Liaison intake logged',
+      label: '1. Request Received',
+      description: 'Ticket submitted & logged',
       isCompleted: ['priced', 'assigned', 'dispatched', 'arrived', 'resolving', 'payment_pending', 'completed'].includes(status),
       isActive: status === 'submitted',
       icon: Clock,
@@ -31,8 +31,8 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
     },
     {
       key: 'pricing',
-      label: '2. Rate Confirmed',
-      description: 'SLA quote structured',
+      label: '2. Price Confirmed',
+      description: 'Fixed price quote set',
       isCompleted: ['assigned', 'dispatched', 'arrived', 'resolving', 'payment_pending', 'completed'].includes(status),
       isActive: status === 'priced',
       icon: CreditCard,
@@ -40,8 +40,8 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
     },
     {
       key: 'dispatch',
-      label: '3. Specialist En Route',
-      description: 'Vehicle GPS tracking',
+      label: '3. Tech on the Way',
+      description: 'Specialist travelling to you',
       isCompleted: ['arrived', 'resolving', 'payment_pending', 'completed'].includes(status),
       isActive: ['assigned', 'dispatched'].includes(status),
       icon: Truck,
@@ -49,17 +49,17 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
     },
     {
       key: 'diagnostic',
-      label: '4. Active Recovery',
-      description: 'In-situ diagnostics & code',
+      label: '4. Repair in Progress',
+      description: 'On-site diagnostic & fix',
       isCompleted: ['payment_pending', 'completed'].includes(status),
       isActive: ['arrived', 'resolving'].includes(status),
       icon: Wrench,
-      color: 'text-emerald-700 bg-emerald-50 border-[#e9e7df]'
+      color: 'text-emerald-700 bg-emerald-50 border-slate-200'
     },
     {
       key: 'accounting',
-      label: '5. Auditing & Ledger',
-      description: 'Verified pending payout',
+      label: '5. Ready for Payment',
+      description: 'Repair done, invoice ready',
       isCompleted: status === 'completed',
       isActive: status === 'payment_pending',
       icon: ShieldAlert,
@@ -67,8 +67,8 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
     },
     {
       key: 'archived',
-      label: '6. Settlement Closed',
-      description: 'Contract completed',
+      label: '6. Ticket Closed',
+      description: 'Job complete & verified',
       isCompleted: status === 'completed',
       isActive: status === 'completed',
       icon: CheckCircle2,
@@ -76,41 +76,41 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
     }
   ];
 
-  // Derive active description text
+  // Derive active description text in plain human language
   const getSLAStatusText = () => {
     switch (status) {
       case 'submitted':
-        return 'Ticket lodged in master queue. Awaiting operator appraisal and fixed cost confirmation.';
+        return 'Ticket received! Waiting for HQ to review details and confirm the price quote.';
       case 'priced':
-        return 'Commercial price computed. Awaiting qualified technician to lock contract and execute.';
+        return 'Price quote confirmed. Waiting for an available technician to accept the job.';
       case 'assigned':
-        return `Contract locked by specialist ${issue.expertName || 'Technical Expert'}. Initializing dispatch checklist.`;
+        return `Job accepted by technician ${issue.expertName || 'Tech Expert'}. Getting ready to head over.`;
       case 'dispatched':
-        return `Rapid-response vehicle dispatched. Specialist ${issue.expertName || 'Technical Expert'} is navigating to coordinates.`;
+        return `Technician ${issue.expertName || 'Tech Expert'} is on the way to your location.`;
       case 'arrived':
-        return 'Specialist on site. Running initial hardware system and software database diagnostic tests.';
+        return 'Technician has arrived on-site and is diagnosing the issue.';
       case 'resolving':
-        return 'Active resolution phase initiated. Deploying updates, testing signals, and checking firmware stability.';
+        return 'Fix in progress! Technician is working on resolving the problem.';
       case 'payment_pending':
-        return 'Resolution completed. Specialist dispatched final reports. Awaiting corporate checkout clearance.';
+        return 'Repair finished! Review the work and complete payment when ready.';
       case 'completed':
-        return 'SLA contract closed successfully. Invoices cleared and 90-Day commercial warranty activated.';
+        return 'Job complete and paid! Your 90-day service warranty is now active.';
       default:
         return 'Monitoring system operations.';
     }
   };
 
   return (
-    <div className="bg-white border border-[#e9e7df] rounded-2xl p-5 space-y-4 shadow-sm text-amber-900/90">
-      <div className="flex justify-between items-center pb-2 border-b border-[#f0eee6]">
+    <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm text-slate-800">
+      <div className="flex justify-between items-center pb-2 border-b border-slate-200">
         <div className="flex items-center gap-2">
-          <History className="w-4 h-4 text-[#5a5a40]" />
-          <span className="text-xs font-black uppercase text-[#2c3124] tracking-wider">
-            SLA LIFECYCLE CHRONOLOGY
+          <History className="w-4 h-4 text-slate-700" />
+          <span className="text-xs font-black uppercase text-slate-900 tracking-wider">
+            TICKET PROGRESS TIMELINE
           </span>
         </div>
         <div className="text-[10px] bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded-md font-mono font-bold">
-          CODE: SB-{issue.id.split('_')[1] || issue.id}
+          TICKET ID: SB-{issue.id.split('_')[1] || issue.id}
         </div>
       </div>
 
@@ -123,10 +123,10 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
               key={p.key}
               className={`p-3 rounded-xl border transition-all text-left relative ${
                 p.isActive 
-                  ? 'border-[#5a5a40] bg-[#fbfcfc] ring-2 ring-[#5a5a40]/10 shadow-sm'
+                  ? 'border-slate-800 bg-slate-50 ring-2 ring-slate-900/10 shadow-sm'
                   : p.isCompleted 
                     ? 'border-emerald-200 bg-emerald-50/20'
-                    : 'border-[#f0eee6] bg-[#fdfcfc]'
+                    : 'border-slate-200 bg-slate-50/50'
               }`}
             >
               {/* Completed dot */}
@@ -135,18 +135,18 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
                   <CheckCircle2 className="w-4.5 h-4.5 text-emerald-600 fill-white" />
                 ) : p.isActive ? (
                   <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5a5a40] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5a5a40]"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-900 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-slate-900"></span>
                   </span>
                 ) : (
-                  <Circle className="w-3.5 h-3.5 text-[#e1e2da]" />
+                  <Circle className="w-3.5 h-3.5 text-slate-300" />
                 )}
               </div>
 
               {/* Icon */}
               <div className={`p-1.5 rounded-lg inline-block mb-2 ${
                 p.isActive 
-                  ? 'bg-[#5a5a40] text-white'
+                  ? 'bg-slate-900 text-white'
                   : p.isCompleted 
                     ? 'bg-emerald-600/10 text-emerald-700'
                     : 'bg-slate-100 text-slate-400'
@@ -166,11 +166,11 @@ export default function TicketLifecycleTracker({ issue }: TrackerProps) {
       </div>
 
       {/* SLA Commentary block */}
-      <div className="bg-[#fcfcfa] border border-[#f0eee6] p-3 rounded-xl flex items-start gap-2.5 text-xs text-[#5a5a40]">
-        <Clock className="w-4 h-4 text-[#8a8d81] shrink-0 mt-0.5" />
+      <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-start gap-2.5 text-xs text-slate-700">
+        <Clock className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
         <div className="space-y-0.5">
-          <span className="font-bold text-[#3d4234] uppercase tracking-wider text-[9px] block">
-            Current Operator Dispatch Diary:
+          <span className="font-bold text-slate-900 uppercase tracking-wider text-[9px] block">
+            Latest Status Update:
           </span>
           <p className="text-slate-700 font-sans leading-relaxed">
             {getSLAStatusText()}

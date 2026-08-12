@@ -852,7 +852,7 @@ export default function ClientDashboard({
 
                     {/* Detailed Ticket Info */}
                     <div className="space-y-4">
-                      <div className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Technical Scope summary</div>
+                      <div className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Problem Summary</div>
                       <p className="text-xs text-slate-800 bg-slate-50 p-3 rounded-xl border border-slate-200 whitespace-pre-wrap leading-relaxed font-semibold font-sans">
                         {selectedIssue.description}
                       </p>
@@ -884,15 +884,15 @@ export default function ClientDashboard({
               {selectedIssue.status === 'payment_pending' && (
                 <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between gap-4 sticky bottom-0 z-10 shrink-0">
                   <div>
-                    <div className="text-[9.5px] text-slate-500 uppercase font-black tracking-wider">Required Completion Release</div>
+                    <div className="text-[9.5px] text-slate-500 uppercase font-black tracking-wider">Total Amount Due</div>
                     <div className="text-xl font-black text-slate-900">${selectedIssue.price} USD</div>
                   </div>
                   <button
                     id="client-btn-launch-payment"
                     onClick={onInitiatePayment}
-                    className="bg-green-600 hover:bg-green-700 text-white font-black px-6 py-3 rounded-xl text-sm transition-all flex items-center gap-2 shadow-lg shadow-green-500/25 active:scale-95"
+                    className="bg-green-600 hover:bg-green-700 text-white font-black px-6 py-3 rounded-xl text-sm transition-all flex items-center gap-2 shadow-lg shadow-green-500/25 active:scale-95 cursor-pointer"
                   >
-                    <Lock className="w-4 h-4 text-white" /> Access Secure Checkout Portal
+                    <Lock className="w-4 h-4 text-white" /> Proceed to Secure Checkout
                   </button>
                 </div>
               )}
@@ -902,7 +902,7 @@ export default function ClientDashboard({
             <div className="flex-grow flex flex-col justify-center items-center text-center p-6 text-slate-400 bg-white">
               <Sparkles className="w-12 h-12 text-blue-500/80 animate-pulse mb-3" />
               <h4 className="text-sm font-extrabold text-slate-800">Select a Service Ticket</h4>
-              <p className="text-xs text-slate-500 max-w-xs mt-1">Select an active incident from the list to track live progress and submit secure payments once resolved.</p>
+              <p className="text-xs text-slate-500 max-w-xs mt-1">Select an active ticket from the list to track live progress and submit secure payments once resolved.</p>
             </div>
           )}
         </div>
@@ -914,17 +914,17 @@ export default function ClientDashboard({
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-[28px] p-6 max-w-xl w-full shadow-2xl relative text-left">
             <h3 className="text-lg font-black text-slate-950 flex items-center gap-2">
-              <Award className="text-blue-600 w-5 h-5" /> File New Incident Ticket
+              <Award className="text-blue-600 w-5 h-5" /> File New Support Request
             </h3>
-            <p className="text-xs text-slate-500 mt-1">Configure operating parameters and pricing preferences dynamically.</p>
+            <p className="text-xs text-slate-500 mt-1">Provide details about your issue and select your pricing option.</p>
 
             <form onSubmit={handleSubmit} className="space-y-4 mt-4 text-slate-800">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">Issue Overview Heading</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Issue Title</label>
                 <input
                   id="field-issue-title"
                   type="text"
-                  placeholder="e.g. Broken PoE router or physical server motherboard replacement"
+                  placeholder="e.g. Broken PoE router or server motherboard repair"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -933,10 +933,10 @@ export default function ClientDashboard({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">System Defect Description</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1">Problem Description</label>
                 <textarea
                   id="field-issue-desc"
-                  placeholder="Provide details about the hardware failures or firmware issues. Sustainable policies prioritize physical repairs over direct equipment disposal."
+                  placeholder="Describe the hardware or software issue you are experiencing."
                   rows={3}
                   required
                   value={description}
@@ -947,7 +947,7 @@ export default function ClientDashboard({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Defect Category</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Category</label>
                   <select
                     id="field-issue-category"
                     value={category}
@@ -955,15 +955,15 @@ export default function ClientDashboard({
                     className="w-full bg-slate-50 border border-slate-200 text-slate-950 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 font-semibold"
                   >
                     <option value="hardware">Hardware Repair</option>
-                    <option value="software">Software Audit</option>
-                    <option value="network">Network Subnetworks</option>
-                    <option value="security">Cybersecurity Threat</option>
-                    <option value="cloud">Eco Cloud Migration</option>
+                    <option value="software">Software Support</option>
+                    <option value="network">Network &amp; Internet</option>
+                    <option value="security">Cybersecurity</option>
+                    <option value="cloud">Cloud &amp; Systems</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Priority urgency</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Urgency Level</label>
                   <select
                     id="field-issue-urgency"
                     value={urgency}
@@ -972,8 +972,8 @@ export default function ClientDashboard({
                   >
                     <option value="low">Low (Next Business Day)</option>
                     <option value="medium">Medium Standard</option>
-                    <option value="high">High Dispatch Priority</option>
-                    <option value="critical">Critical (Immediate dispatch)</option>
+                    <option value="high">High Priority</option>
+                    <option value="critical">Critical (Immediate Dispatch)</option>
                   </select>
                 </div>
               </div>
